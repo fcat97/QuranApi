@@ -1,0 +1,121 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 30
+
+    // -------------------------------------------------------------------------------------------- //
+    // Automating Version Numbering
+    // https://stackoverflow.com/questions/21405457/autoincrement-versioncode-with-gradle-extra-properties
+    // answer by: Ahmad Aghazadeh
+
+    def _versionCode = 0
+    def _major = 0
+    def _minor = 0
+    def _patch = 0
+
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        _patch = versionProps['PATCH'].toInteger() + 1
+        _major = versionProps['MAJOR'].toInteger()
+        _minor = versionProps['MINOR'].toInteger()
+        _versionCode= versionProps['VERSION_CODE'].toInteger() + 1
+        if(_patch == 100)
+        {
+            _patch = 0
+            _minor =_minor + 1
+        }
+        if(_minor == 10){
+            _minor = 0
+            _major =_major + 1
+        }
+
+        versionProps['MAJOR'] =_major.toString()
+        versionProps['MINOR'] =_minor.toString()
+        versionProps['PATCH'] =_patch.toString()
+        versionProps['VERSION_CODE']=_versionCode.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
+    else {
+        throw new GradleException("Could not read version.properties!")
+    }
+    def _versionName = "${_major}.${_minor}.${_patch}"
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 30
+        versionCode _versionCode
+        versionName _versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication Called release
+            release(MavenPublication) {
+                /// Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'media.uqab.QuranApi'
+                artifactId = 'final'
+
+                def versionPropsFile = file('version.properties')
+                if (versionPropsFile.canRead()) {
+                    Properties versionProps = new Properties()
+
+                    versionProps.load(new FileInputStream(versionPropsFile))
+
+                    def _patch = versionProps['PATCH'].toInteger()
+                    def _major = versionProps['MAJOR'].toInteger()
+                    def _minor = versionProps['MINOR'].toInteger()
+
+                    version = "${_major}.${_minor}.${_patch}"
+                }
+            }
+        }
+    }
+}
