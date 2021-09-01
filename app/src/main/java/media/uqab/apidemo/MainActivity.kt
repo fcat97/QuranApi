@@ -2,7 +2,7 @@ package media.uqab.apidemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import media.uqab.quranapi.QuranApi
 
 class MainActivity : AppCompatActivity() {
@@ -12,10 +12,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val api = QuranApi(this)
-        val textView = findViewById<TextView>(R.id.textView)
+        val recyclerView = findViewById<RecyclerView>(R.id.textView)
+//        val surahNameAr = findViewById<TextView>(R.id.surahNameAr)
+//        val surahNameEn = findViewById<TextView>(R.id.surahName)
+        val adapter = Adapter()
+        recyclerView.adapter = adapter
 
-        api.getSurah(1) {
-            runOnUiThread { textView.text = it.getIndoVerses() }
+        api.getSurah(2) {
+            runOnUiThread {
+//                surahNameAr.text = it.nameAr
+//                surahNameEn.text = it.name
+                adapter.submitList(it.verses)
+            }
         }
     }
 }
