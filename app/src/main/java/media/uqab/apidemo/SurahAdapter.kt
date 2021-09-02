@@ -27,7 +27,7 @@ class SurahAdapter(val listener: ItemClickListener): RecyclerView.Adapter<SurahA
         val surahInfo = surahInfo[position]
 
         holder.surahName.text = surahInfo.name
-        holder.surahNo.text = (surahInfo.surahNo + 1).toString()
+        holder.surahNo.text = (surahInfo.surahNo).toString()
         holder.info.text = surahInfo.type
 
         holder.itemView.setOnClickListener { listener.onClick(surahInfo.surahNo) }

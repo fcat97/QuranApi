@@ -23,10 +23,18 @@ class FragmentSurah(private val surahNo: Int): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val api = QuranApi(requireContext())
-        val adapter = Adapter()
+        val adapter = VerseAdapter()
         binding.recyclerView.adapter = adapter
 
-        api.getSurah(surahNo) { requireActivity().runOnUiThread { adapter.submitList(it.verses) } }
+
+        api.getSurah(surahNo) {
+            with(requireActivity()) {
+                runOnUiThread {
+                    adapter.submitList(it.verses)
+                    title = "${it.surahNo}. ${it.name}"
+                }
+            }
+        }
     }
 
 

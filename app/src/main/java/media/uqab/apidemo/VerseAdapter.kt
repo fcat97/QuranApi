@@ -2,7 +2,6 @@ package media.uqab.apidemo
 
 import android.graphics.Color
 import android.text.Spanned
-import android.text.SpannedString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +9,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import media.uqab.quranapi.TajweedApi
 import media.uqab.quranapi.Verse
-import kotlin.text.StringBuilder
 
-class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
+class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     private val TAG = "Adapter"
     private var verses: List<Verse> = listOf()
     private var spannedVerse: MutableList<Spanned> = mutableListOf()
+    @Volatile private var cached = false
 
     class AyahHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.textView)
@@ -38,8 +38,14 @@ class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
 
         holder.verseNo.text = (position + 1).toString()
 
-        val verse = verses[position].verse
-        holder.textView.text = TajweedApi.getTajweedColored(verse)
+        if (cached) {
+            holder.textView.text = spannedVerse[position]
+            Log.d(TAG, "onBindViewHolder: using cached")
+        } else {
+            Log.d(TAG, "onBindViewHolder: using raw")
+            val verse = verses[position].verseIndo
+            holder.textView.text = TajweedApi.getTajweedColored(verse)
+        }
     }
 
     private fun getItem(position: Int): Spanned {
@@ -51,7 +57,11 @@ class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
 
     fun submitList(verses: List<Verse>) {
         this.verses = verses
-//        for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
         notifyDataSetChanged()
+        Thread {
+            // make a cache for spannedString.. It will make UI load faster
+            for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
+            cached = true
+        }.start()
     }
 }

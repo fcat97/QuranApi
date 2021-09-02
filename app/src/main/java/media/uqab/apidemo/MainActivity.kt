@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 
 
-
-
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {

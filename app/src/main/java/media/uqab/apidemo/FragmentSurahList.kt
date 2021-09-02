@@ -27,6 +27,7 @@ class FragmentSurahList(private val listener: ItemClickedListener): Fragment() {
         val api = QuranApi(requireContext())
 
         binding.recyclerView.adapter = adapter
+        requireActivity().title = "QuranApi"
         api.getSurahInfo {
             requireActivity().runOnUiThread { adapter.submitSurah(it) }
         }
