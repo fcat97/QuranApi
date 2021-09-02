@@ -172,7 +172,7 @@ object TajweedApi {
     }
 
     // for debugging only
-    fun toUnicode(c: Char): String {
-        return String.format("\\%04x", c.toInt())
+    private fun toUnicode(c: Char): String {
+        return String.format("\\%04x", c.code)
     }
 }
