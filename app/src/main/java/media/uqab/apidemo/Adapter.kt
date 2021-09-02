@@ -1,20 +1,27 @@
 package media.uqab.apidemo
 
 import android.graphics.Color
+import android.text.Spanned
+import android.text.SpannedString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import media.uqab.quranapi.TajweedApi
 import media.uqab.quranapi.Verse
+import kotlin.text.StringBuilder
 
 class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
+    private val TAG = "Adapter"
     private var verses: List<Verse> = listOf()
+    private var spannedVerse: MutableList<Spanned> = mutableListOf()
 
     class AyahHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.textView)
+        val verseNo: TextView = itemView.findViewById(R.id.verseNo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AyahHolder {
@@ -29,11 +36,13 @@ class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
             holder.itemView.setBackgroundColor(color)
         } else holder.itemView.setBackgroundColor(Color.WHITE)
 
-        holder.textView.text = getItem(position).verseIndo
+        holder.verseNo.text = (position + 1).toString()
+
+        holder.textView.text = getItem(position)
     }
 
-    private fun getItem(position: Int): Verse {
-        return verses[position]
+    private fun getItem(position: Int): Spanned {
+        return spannedVerse[position]
     }
     override fun getItemCount(): Int {
         return verses.size
@@ -41,6 +50,7 @@ class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
 
     fun submitList(verses: List<Verse>) {
         this.verses = verses
+        for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
         notifyDataSetChanged()
     }
 }
