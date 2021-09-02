@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/circle_background.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_surah.xml" value="0.20364583333333333" />
+        <entry key="app/src/main/res/layout/fragment_surah_list.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/item_ayah.xml" value="0.20364583333333333" />
+        <entry key="app/src/main/res/layout/item_surah.xml" value="0.16" />
       </map>
     </option>
   </component>

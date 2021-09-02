@@ -38,7 +38,8 @@ class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
 
         holder.verseNo.text = (position + 1).toString()
 
-        holder.textView.text = getItem(position)
+        val verse = verses[position].verse
+        holder.textView.text = TajweedApi.getTajweedColored(verse)
     }
 
     private fun getItem(position: Int): Spanned {
@@ -50,7 +51,7 @@ class Adapter: RecyclerView.Adapter<Adapter.AyahHolder>() {
 
     fun submitList(verses: List<Verse>) {
         this.verses = verses
-        for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
+//        for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
         notifyDataSetChanged()
     }
 }

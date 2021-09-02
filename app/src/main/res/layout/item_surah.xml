@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:padding="4dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/surahNo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/circle_background"
+        android:fontFamily="@font/backslash"
+        android:text="1"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/surahName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/suratul_fatiha"
+        android:fontFamily="@font/serat_ultra"
+        android:layout_marginStart="8dp"
+        android:textSize="20sp"
+        android:layout_toStartOf="@id/calligraphyName"
+        android:layout_toEndOf="@id/surahNo"/>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Madaniyah"
+        android:fontFamily="@font/backslash"
+        android:layout_below="@id/surahName"
+        android:textSize="14sp"
+        android:layout_alignStart="@id/surahName"
+        android:layout_alignEnd="@id/surahName"/>
+    <TextView
+        android:id="@+id/calligraphyName"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="D"
+        android:textSize="48sp"
+        android:layout_centerVertical="true"
+        android:autoSizeTextType="uniform"
+        android:textAlignment="center"
+        android:fontFamily="@font/quran_karim_114"
+        android:layout_alignParentEnd="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

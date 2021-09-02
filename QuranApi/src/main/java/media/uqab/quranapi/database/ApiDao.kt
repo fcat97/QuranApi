@@ -13,4 +13,7 @@ interface ApiDao {
 
     @Query("SELECT * FROM surah_info_table WHERE surahNo = :surahNo")
     fun surahInfo(surahNo: Int): SurahInfo
+
+    @Query("SELECT * FROM surah_info_table ORDER BY surahNo ASC")
+    fun surahInfo(): List<SurahInfo>
 }

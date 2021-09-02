@@ -5,6 +5,7 @@ import android.os.Looper
 import android.util.Log
 import media.uqab.quranapi.database.ApiDatabase
 import media.uqab.quranapi.database.Content
+import media.uqab.quranapi.database.SurahInfo
 import java.util.concurrent.Executors
 
 class QuranApi(context: Context) {
@@ -30,7 +31,10 @@ class QuranApi(context: Context) {
             callback.result(surah)
         }.start()
     }
-
+    fun getSurahInfo(callback: SurahInfoCallback) {
+        Thread { callback.result(dao.surahInfo()) }.start()
+    }
     fun interface VerseResultCallback { fun result(verse: Verse) }
     fun interface SurahResultCallback { fun result(surah: Surah) }
+    fun interface SurahInfoCallback { fun result(surahList: List<SurahInfo>) }
 }

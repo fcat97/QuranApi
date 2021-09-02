@@ -1,0 +1,48 @@
+package media.uqab.apidemo
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import media.uqab.quranapi.database.SurahInfo
+
+class SurahAdapter(val listener: ItemClickListener): RecyclerView.Adapter<SurahAdapter.SurahHolder>() {
+    private var surahInfo: List<SurahInfo> = listOf()
+
+    class SurahHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var surahName: TextView = itemView.findViewById(R.id.surahName)
+        var surahNo: TextView = itemView.findViewById(R.id.surahNo)
+        var info: TextView = itemView.findViewById(R.id.info)
+        var calligraphy: TextView = itemView.findViewById(R.id.calligraphyName)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurahHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.item_surah, parent, false)
+        return SurahHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SurahHolder, position: Int) {
+        val surahInfo = surahInfo[position]
+
+        holder.surahName.text = surahInfo.name
+        holder.surahNo.text = (surahInfo.surahNo + 1).toString()
+        holder.info.text = surahInfo.type
+
+        holder.itemView.setOnClickListener { listener.onClick(surahInfo.surahNo) }
+    }
+
+    override fun getItemCount(): Int {
+        return surahInfo.size
+    }
+
+    fun submitSurah(surahInfo: List<SurahInfo>) {
+        this.surahInfo = surahInfo
+        notifyDataSetChanged()
+    }
+
+    fun interface ItemClickListener {
+        fun onClick(surahNo: Int)
+    }
+}
