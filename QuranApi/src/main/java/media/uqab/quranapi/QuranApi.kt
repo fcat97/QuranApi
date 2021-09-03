@@ -19,7 +19,7 @@ class QuranApi(context: Context) {
     private val dao = ApiDatabase.getInstance(context).apiDao
 
     companion object {
-        fun getSurahInfo(surahNo: Int): SurahInfo {
+        fun getSurahInfoList(): List<SurahInfo> {
             var surahInfoList: List<SurahInfo> = listOf()
             val gson = Gson()
             val str: InputStream? = QuranApi::class.java.getResourceAsStream("/assets/surah_info.json")
@@ -28,7 +28,11 @@ class QuranApi(context: Context) {
                 val type: Type = object : TypeToken<ArrayList<SurahInfo>>(){}.type
                 surahInfoList = gson.fromJson(isr, type)
             }
-            return surahInfoList[surahNo -1]
+            return surahInfoList
+        }
+
+        fun getSurahInfo(surahNo: Int): SurahInfo {
+            return getSurahInfoList()[surahNo - 1]
         }
     }
 
@@ -51,6 +55,7 @@ class QuranApi(context: Context) {
         }.start()
     }
 
+    @Deprecated
     fun getSurahInfo(callback: SurahInfoCallback) {
         Thread { callback.result(dao.surahInfo()) }.start()
     }
