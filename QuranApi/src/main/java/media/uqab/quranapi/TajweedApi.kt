@@ -57,12 +57,10 @@ object TajweedApi {
     fun getTajweedColored(verse: String): Spanned {
         val spannable = SpannableString(verse)
 
-        Log.d(TAG, "getTajweedColored: $pattern_nuun_sakin")
+//        Log.d(TAG, "getTajweedColored: $pattern_nuun_sakin")
 
         // TODO: this needs too much computation.. So make it fast
-        for (i in verse.indices) {
-            Log.d(TAG, "getTajweedColored: ${verse[i]} --> ${toUnicode(verse[i])}")
-        }
+//        for (i in verse.indices) { Log.d(TAG, "getTajweedColored: ${verse[i]} --> ${toUnicode(verse[i])}") }
         applySpan(pattern_wazeebGunnah, verse, wazeebGunnahColor, spannable)
         applySpan(pattern_iqfaa, verse, iqfaaColor, spannable)
         applySpan(pattern_iqlab, verse, iqlabColor, spannable)
@@ -174,7 +172,7 @@ object TajweedApi {
                           logTag: String = "applySpan") {
         val range = regex.findAll(verse)
         for (r in range) {
-            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last + 2)}")
+//            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last + 2)}")
             spannable.setSpan(ForegroundColorSpan(color),
                 r.range.first, r.range.last + endOffset,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

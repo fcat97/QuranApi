@@ -4,17 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:id="@+id/surahInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="D"
+            android:textSize="100sp"
+            android:fontFamily="@font/quran_karim_114"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/verseNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:layout_below="@id/surahInfo"
         android:layout_margin="12dp"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/surahInfo"
         android:padding="16dp"
         android:textSize="32sp"
         android:text="@string/surah_fatiha"

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     class AyahHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.findViewById(R.id.textView)
         val verseNo: TextView = itemView.findViewById(R.id.verseNo)
+        val surahInfo: RelativeLayout = itemView.findViewById(R.id.surahInfo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AyahHolder {
@@ -36,8 +38,12 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
             holder.itemView.setBackgroundColor(color)
         } else holder.itemView.setBackgroundColor(Color.WHITE)
 
-        holder.verseNo.text = (position + 1).toString()
+        holder.verseNo.text = verses[position].verseNo.toString()
+        holder.surahInfo.visibility = if (verses[position].verseNo == 1) { View.VISIBLE } else { View.GONE }
 
+        val verse = verses[position].verseIndo
+        holder.textView.text = TajweedApi.getTajweedColored(verse)
+        /*
         if (cached) {
             holder.textView.text = spannedVerse[position]
             Log.d(TAG, "onBindViewHolder: using cached")
@@ -45,7 +51,7 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
             Log.d(TAG, "onBindViewHolder: using raw")
             val verse = verses[position].verseIndo
             holder.textView.text = TajweedApi.getTajweedColored(verse)
-        }
+        }*/
     }
 
     private fun getItem(position: Int): Spanned {
@@ -58,10 +64,10 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     fun submitList(verses: List<Verse>) {
         this.verses = verses
         notifyDataSetChanged()
-        Thread {
-            // make a cache for spannedString.. It will make UI load faster
-            for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
-            cached = true
-        }.start()
+//        Thread {
+//            // make a cache for spannedString.. It will make UI load faster
+//            for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
+//            cached = true
+//        }.start()
     }
 }

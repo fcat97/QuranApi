@@ -43,4 +43,10 @@ api.getSurah(2) {
 }
 ```
 
+More Advance uses is implemented in App.. Explore it...
+
+>
+
 More features are comming InshaAllah...
+
+Feel free to fork and update. Just give me a PullRequest...

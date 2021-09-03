@@ -11,20 +11,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragmentSurahList = FragmentSurahList { openSurahFragment(it) }
+        val fragmentSurahList = FragmentSurahList { openFragmentBySurah(it) }
         supportFragmentManager.beginTransaction()
             .add(R.id.container, fragmentSurahList)
             .commit();
     }
 
-    private fun openSurahFragment(surahNo: Int) {
-        val fragmentSurah = FragmentSurah(surahNo)
+    private fun openFragmentBySurah(surahNo: Int) {
+        val fragmentPage = FragmentPage(surahNo = surahNo)
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
                 R.anim.enter_from_left, R.anim.exit_to_right)
-            .replace(R.id.container, fragmentSurah)
-            .addToBackStack(fragmentSurah::class.java.name)
+            .replace(R.id.container, fragmentPage)
+            .addToBackStack(fragmentPage::class.java.name)
+            .commit();
+    }
+
+    private fun openFragmentByPage(pageNo: Int) {
+        val fragmentPage = FragmentPage(pageNo = pageNo)
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                R.anim.enter_from_left, R.anim.exit_to_right)
+            .replace(R.id.container, fragmentPage)
+            .addToBackStack(fragmentPage::class.java.name)
             .commit();
     }
 

@@ -1,6 +1,6 @@
 package media.uqab.quranapi
 
-class Surah(
+class Surah (
     val surahNo: Int,
     val name: String,
     val nameAr: String,
@@ -12,6 +12,7 @@ class Surah(
 
         verses.forEach {
             stringBuilder.append(it.verseIndo)
+            stringBuilder.append("(${it.verseNo})")
         }
         return stringBuilder.toString()
     }
