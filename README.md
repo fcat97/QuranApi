@@ -1,3 +1,6 @@
+![Quran Api](https://github.com/[fCat97]/[QuranApi]/blob/[main]/images/cover.png?raw
+
+
 # QuranApi [![](https://jitpack.io/v/fcat97/QuranApi.svg)](https://jitpack.io/#fcat97/QuranApi)
 
 
