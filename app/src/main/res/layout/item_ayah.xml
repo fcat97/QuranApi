@@ -4,32 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/surahInfo"
+    <LinearLayout
+        android:id="@+id/surahInfoLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
         <TextView
+            android:id="@+id/surahName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="D"
-            android:textSize="100sp"
-            android:fontFamily="@font/quran_karim_114"
+            android:text="Suratul Fatiha"
+            android:textSize="40sp"
+            android:fontFamily="@font/pdms_islamic"
             android:textAlignment="center"/>
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/ta_audh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ta_audh"
+            android:textSize="40sp"
+            android:fontFamily="@font/pdms_islamic"
+            android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/basmalah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/basmalah"
+            android:textSize="40sp"
+            android:fontFamily="@font/pdms_islamic"
+            android:textAlignment="center"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/verseNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_below="@id/surahInfo"
+        android:layout_below="@id/surahInfoLayout"
         android:layout_margin="12dp"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/surahInfo"
+        android:layout_below="@id/surahInfoLayout"
         android:padding="16dp"
         android:textSize="32sp"
         android:text="@string/surah_fatiha"

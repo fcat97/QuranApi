@@ -6,11 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
+import media.uqab.apidemo.databinding.ItemAyahBinding
+import media.uqab.quranapi.QuranApi
 import media.uqab.quranapi.TajweedApi
 import media.uqab.quranapi.Verse
 
@@ -20,29 +23,46 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     private var spannedVerse: MutableList<Spanned> = mutableListOf()
     @Volatile private var cached = false
 
-    class AyahHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(R.id.textView)
-        val verseNo: TextView = itemView.findViewById(R.id.verseNo)
-        val surahInfo: RelativeLayout = itemView.findViewById(R.id.surahInfo)
+    class AyahHolder(private val binding: ItemAyahBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(verse: Verse) {
+            if (adapterPosition % 2 == 0) {
+                val color = ContextCompat.getColor(binding.root.context, R.color.light_color)
+                binding.root.setBackgroundColor(color)
+            } else binding.root.setBackgroundColor(Color.WHITE)
+
+            binding.surahInfoLayout.visibility = if (verse.verseNo == 1) {
+                when (verse.surahNo){
+                    1 -> {
+                        binding.taAudh.visibility = View.VISIBLE
+                        binding.basmalah.visibility = View.GONE
+                    }
+                    9 -> {
+                        binding.taAudh.visibility = View.GONE
+                        binding.basmalah.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.taAudh.visibility = View.GONE
+                        binding.basmalah.visibility = View.VISIBLE
+                    }
+                }
+                View.VISIBLE
+            } else View.GONE
+
+
+            binding.surahName.text = QuranApi.getSurahInfo(verse.surahNo).nameAr
+            binding.verseNo.text = verse.verseNo.toString()
+            binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AyahHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_ayah, parent, false)
-        return AyahHolder(view)
+        val binding = ItemAyahBinding.inflate(inflater, parent, false)
+        return AyahHolder(binding)
     }
 
     override fun onBindViewHolder(holder: AyahHolder, position: Int) {
-        if (position % 2 == 0) {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.lightColor)
-            holder.itemView.setBackgroundColor(color)
-        } else holder.itemView.setBackgroundColor(Color.WHITE)
-
-        holder.verseNo.text = verses[position].verseNo.toString()
-        holder.surahInfo.visibility = if (verses[position].verseNo == 1) { View.VISIBLE } else { View.GONE }
-
-        val verse = verses[position].verseIndo
-        holder.textView.text = TajweedApi.getTajweedColored(verse)
+        holder.bind(verses[position])
         /*
         if (cached) {
             holder.textView.text = spannedVerse[position]

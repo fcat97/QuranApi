@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import media.uqab.quranapi.QuranApi
 import media.uqab.quranapi.database.SurahInfo
 
 class SurahListAdapter(val listener: ItemClickListener): RecyclerView.Adapter<SurahListAdapter.SurahHolder>() {
@@ -29,6 +30,7 @@ class SurahListAdapter(val listener: ItemClickListener): RecyclerView.Adapter<Su
         holder.surahName.text = surahInfo.name
         holder.surahNo.text = (surahInfo.surahNo).toString()
         holder.info.text = surahInfo.type
+        holder.calligraphy.text = QuranApi.getSurahInfo(surahInfo.surahNo).nameAr
 
         holder.itemView.setOnClickListener { listener.onClick(surahInfo.surahNo) }
     }
