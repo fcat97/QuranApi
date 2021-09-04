@@ -36,6 +36,7 @@ class FragmentPage(
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
         if (pageNo == -1001 && surahNo != -1001) {
+            requireActivity().title = QuranApi.getSurahInfo(surahNo).name
             Log.d(TAG, "onViewCreated: bySurah s:$surahNo p:$pageNo")
             api.getBySurah(surahNo) {
                 Log.d(TAG, "onViewCreated: ${it.size}")

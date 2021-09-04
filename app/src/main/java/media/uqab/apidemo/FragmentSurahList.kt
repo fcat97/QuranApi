@@ -23,17 +23,10 @@ class FragmentSurahList(private val listener: ItemClickedListener): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val api = QuranApi(requireContext())
-        val adapter = SurahListAdapter {
-            listener.onClick(it)
-        }
-
+        val adapter = SurahListAdapter { listener.onClick(it) }
         binding.recyclerView.adapter = adapter
         requireActivity().title = "QuranApi"
-        api.getSurahInfo {
-            requireActivity().runOnUiThread { adapter.submitSurah(it) }
-        }
+        adapter.submitSurah(QuranApi.getSurahInfoList())
     }
 
     fun interface ItemClickedListener {

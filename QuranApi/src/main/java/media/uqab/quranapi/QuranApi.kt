@@ -55,10 +55,9 @@ class QuranApi(context: Context) {
         }.start()
     }
 
-    @Deprecated
-    fun getSurahInfo(callback: SurahInfoCallback) {
-        Thread { callback.result(dao.surahInfo()) }.start()
-    }
+    @Deprecated("This method is deprecated now.")
+    fun getSurahInfo(callback: SurahInfoCallback) { Thread { callback.result(dao.surahInfo()) }.start() }
+
     fun getByPage(pageNo: Int, callback: PageCallback) {
         Thread {
             val content = dao.contentByPage(pageNo)

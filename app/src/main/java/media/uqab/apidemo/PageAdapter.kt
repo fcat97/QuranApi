@@ -1,10 +1,14 @@
 package media.uqab.apidemo
 
+import android.graphics.Color
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import media.uqab.quranapi.Page
@@ -29,6 +33,12 @@ class PageAdapter: RecyclerView.Adapter<PageAdapter.PageHolder>(){
             }
             layoutManager.initialPrefetchItemCount = 4
             recyclerView.layoutManager = layoutManager
+
+            val typedValue = TypedValue()
+            textView.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val colorPrimary = typedValue.data
+            val color = Color.argb(120, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
+            textView.setBackgroundColor(color)
         }
 
         fun bind(page: Page) {

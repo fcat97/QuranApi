@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.ApiDemo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorLightBlue</item>
-        <item name="colorPrimaryVariant">@color/colorLightBlueDark</item>
+        <item name="colorPrimary">@color/colorGreen</item>
+        <item name="colorPrimaryVariant">@color/colorGreenAccent</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorOrange</item>

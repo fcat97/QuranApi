@@ -2,20 +2,20 @@ package media.uqab.apidemo
 
 import android.graphics.Color
 import android.text.Spanned
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
 import media.uqab.apidemo.databinding.ItemAyahBinding
 import media.uqab.quranapi.QuranApi
 import media.uqab.quranapi.TajweedApi
 import media.uqab.quranapi.Verse
+
+import android.util.TypedValue
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
+
 
 class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     private val TAG = "Adapter"
@@ -25,8 +25,11 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
 
     class AyahHolder(private val binding: ItemAyahBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(verse: Verse) {
-            if (adapterPosition % 2 == 0) {
-                val color = ContextCompat.getColor(binding.root.context, R.color.light_color)
+            if (verse.verseNo % 2 == 0) {
+                val typedValue = TypedValue()
+                binding.root.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+                val colorPrimary = typedValue.data
+                val color = Color.argb(15, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
                 binding.root.setBackgroundColor(color)
             } else binding.root.setBackgroundColor(Color.WHITE)
 

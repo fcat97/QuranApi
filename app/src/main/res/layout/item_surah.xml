@@ -11,10 +11,10 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:autoSizeTextType="uniform"
         android:background="@drawable/circle_background"
-        android:fontFamily="@font/backslash"
+        android:fontFamily="@font/serat_ultra"
         android:text="1"
+        android:gravity="center"
         android:textAlignment="center"
         android:textSize="16sp" />
 

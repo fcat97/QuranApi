@@ -13,21 +13,22 @@ import android.util.Log
  * currently this only works for IndoQuran format.
  */
 object TajweedApi {
-    private val TAG = "TajweedApi"
-    private val iqfaa = listOf('ت','ث','ج','د','ذ','ز','س','ش','ص','ض','ط','ظ','ف','ق','ك')
+    private const val TAG = "TajweedApi"
+    private val iqfaa = listOf('ت','ث','ج','د','ذ','ز','س','ش','ص','ض','ط','ظ','ف','ق','ك','ک') // U+06a9(alt kaaf, keheh)
     private val qalqalah = listOf('ق','ط','ب','ج','د')
-    private val meem = 'م' // U+0645
-    private val nuun = 'ن' // U+0646
-    private val baa = 'ب' // U+0628
+    private const val meem = 'م' // U+0645
+    private const val nuun = 'ن' // U+0646
+    private const val baa = 'ب' // U+0628
     private val harqat = listOf('َ','ِ','ُ') // U+064e, U+0650, U+064f
     private val tanween = listOf('ً','ٍ','ٌ') // U+064b, U+064d, U+064c
-    private val tashdeed = 'ّ' // U+0651
-    private val maddah = 'ٓ' // U+0653
-    private val superscriptAlif = 'ٰ' //  U+0670 vertical fatha/খাড়া যবর
-    private val subscriptAlif = 'ٖ' //  U+0656 vertical kasra/খাড়া জের
-    private val invertedDamma = 'ٗ' // U+0657
+    private const val tashdeed = 'ّ' // U+0651
+    private const val maddah = 'ٓ' // U+0653
+    private const val small_high_maddah = 'ۤ' // U+06e4
+    private const val superscriptAlif = 'ٰ' //  U+0670 vertical fatha/খাড়া যবর
+    private const val subscriptAlif = 'ٖ' //  U+0656 vertical kasra/খাড়া জের
+    private const val invertedDamma = 'ٗ' // U+0657
     private val sakin = listOf('ۡ','ْ') // U+06e1, U+0652
-    private val meem_isolated = 'ۢ' // U+06e2
+    private const val meem_isolated = 'ۢ' // U+06e2
     private val harf_idgam_withGunnah = listOf('ی','ى','و','م','ن') // U+06cc(farsi ya) U+064a, U+0648, U+0645, U+0646
     private val harf_idgam_withoutGunnah = listOf('ر','ل') // U+0631, U+0644
 
@@ -39,7 +40,7 @@ object TajweedApi {
     private val pattern_idgaan_wog = getIdgaamWithOutGunnahPattern().toRegex()
     private val pattern_wazeebGunnah = getWazeebGunnah().toRegex()
 
-    var qalqalahColor = Color.GREEN
+    var qalqalahColor = Color.parseColor("#00aa00")
     var iqfaaColor = Color.RED
     var iqlabColor = Color.BLUE
     var idgamWithGunnahColor = Color.MAGENTA
@@ -56,11 +57,11 @@ object TajweedApi {
      */
     fun getTajweedColored(verse: String): Spanned {
         val spannable = SpannableString(verse)
+        for (i in verse.indices) Log.d(TAG, "getTajweedColored: ${toUnicode(verse[i])} --> ${verse[i]}")
 
 //        Log.d(TAG, "getTajweedColored: $pattern_nuun_sakin")
 
         // TODO: this needs too much computation.. So make it fast
-//        for (i in verse.indices) { Log.d(TAG, "getTajweedColored: ${verse[i]} --> ${toUnicode(verse[i])}") }
         applySpan(pattern_wazeebGunnah, verse, wazeebGunnahColor, spannable)
         applySpan(pattern_iqfaa, verse, iqfaaColor, spannable)
         applySpan(pattern_iqlab, verse, iqlabColor, spannable)
@@ -132,14 +133,14 @@ object TajweedApi {
         this.append("?")
 
         // here we don't use the getHarqatPattern()
-        // since U+06cc sometime acts as extra harf which has no gunnah
+        // since `U+06cc` sometime acts as extra harf which has no gunnah
         this.append("[")
         for (c in harqat) this.append(c)
         for (c in tanween) this.append(c)
         this.append(superscriptAlif)
         this.append(subscriptAlif)
         this.append(invertedDamma)
-        this.append("]") // <--- here we don't add '?' i.e. not optional
+        this.append("]") // <--- here we don't add '?' i.e. it's must, not optional
     }
 
     private fun getIdgaamWithOutGunnahPattern() = buildString {
