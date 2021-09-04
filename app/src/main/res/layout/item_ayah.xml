@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/surahInfoLayout"
@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:text="Suratul Fatiha"
             android:textSize="40sp"
+            android:textColor="@color/black"
             android:fontFamily="@font/pdms_islamic"
             android:textAlignment="center"/>
         <TextView
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/ta_audh"
             android:textSize="40sp"
+            android:textColor="@color/black"
             android:fontFamily="@font/pdms_islamic"
             android:textAlignment="center"/>
         <TextView
@@ -32,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/basmalah"
             android:textSize="40sp"
+            android:textColor="@color/black"
             android:fontFamily="@font/pdms_islamic"
             android:textAlignment="center"/>
 
@@ -49,11 +52,22 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/surahInfoLayout"
+        android:layout_below="@id/verseNo"
         android:padding="16dp"
         android:textSize="32sp"
+        android:textColor="@android:color/black"
         android:text="@string/surah_fatiha"
         android:textAlignment="viewEnd"
         android:fontFamily="@font/noorehuda"/>
+
+    <ImageButton
+        android:id="@+id/moreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_more_horiz"
+        android:background="@android:color/transparent"
+        android:layout_toEndOf="@id/verseNo"
+        android:layout_alignTop="@id/verseNo"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

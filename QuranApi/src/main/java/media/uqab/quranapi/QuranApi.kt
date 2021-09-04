@@ -8,6 +8,8 @@ import media.uqab.quranapi.database.SurahInfo
 import com.google.gson.reflect.TypeToken
 
 import com.google.gson.Gson
+import media.uqab.quranapi.database.ReciteProfile
+import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.reflect.Type
@@ -15,35 +17,71 @@ import java.nio.charset.StandardCharsets
 
 
 class QuranApi(context: Context) {
-    private val TAG = "QuranApi"
     private val dao = ApiDatabase.getInstance(context).apiDao
 
     companion object {
-        fun getSurahInfoList(): List<SurahInfo> {
-            var surahInfoList: List<SurahInfo> = listOf()
-            val gson = Gson()
-            val str: InputStream? = QuranApi::class.java.getResourceAsStream("/assets/surah_info.json")
-            str?.let {
-                val isr = InputStreamReader(str, StandardCharsets.UTF_8)
-                val type: Type = object : TypeToken<ArrayList<SurahInfo>>(){}.type
-                surahInfoList = gson.fromJson(isr, type)
+        private const val TAG = "QuranApi"
+        private const val reciteProfileFileName = "reciteProfile"
+        private lateinit var api: QuranApi
+        private lateinit var infoList: List<SurahInfo>
+        private lateinit var reciteProfile: ReciteProfile
+
+        fun getInstance(context: Context): QuranApi {
+            if (! this::api.isInitialized) { api = QuranApi(context) }
+
+            if (! this::reciteProfile.isInitialized) {
+                val fileDir = context.getExternalFilesDirs("data").toString()
+                val file = File(fileDir, reciteProfileFileName)
+                reciteProfile = if (file.exists()) {
+                    val gson = Gson()
+                    val type = object : TypeToken<ReciteProfile>(){}.type
+                    gson.fromJson(file.readText(), type)
+                } else ReciteProfile()
             }
-            return surahInfoList
+
+            return api
+        }
+
+        fun getSurahInfoList(): List<SurahInfo> {
+            if (! this::infoList.isInitialized) {
+                val gson = Gson()
+                val str: InputStream? = QuranApi::class.java.getResourceAsStream("/assets/surah_info.json")
+                str?.let {
+                    val isr = InputStreamReader(str, StandardCharsets.UTF_8)
+                    val type: Type = object : TypeToken<ArrayList<SurahInfo>>(){}.type
+                    infoList = gson.fromJson(isr, type)
+                }
+            }
+            return infoList
         }
 
         fun getSurahInfo(surahNo: Int): SurahInfo {
             return getSurahInfoList()[surahNo - 1]
         }
+
+        fun saveReciteProfile(context: Context,
+                              verseID: Int,
+                              profile: ReciteProfile.Profile) {
+            reciteProfile.setProfile(verseID, profile)
+            val fileDir = context.getExternalFilesDir("data").toString()
+            val file = File(fileDir, reciteProfileFileName)
+            ThreadExecutor.execute {
+                val gson = Gson()
+                val type = object : TypeToken<ReciteProfile>(){}.type
+                val json = gson.toJson(reciteProfile, type)
+                file.writeText(json, StandardCharsets.UTF_8)
+            }
+        }
     }
 
     fun getVerse(surahNo: Int, verseNo: Int, callback: VerseResultCallback) {
-        Thread {
+        ThreadExecutor.execute {
             val content = dao.contentByVerse(surahNo, verseNo)
-            callback.result(Verse(content.verse, content.verseAr, content.verseIndo, content.verseNo, content.surahNo))
-        }.start()
+            callback.result(Verse(content))
+        }
     }
     fun getSurah(surahNo: Int, callback: SurahResultCallback) {
-        Thread {
+        ThreadExecutor.execute {
             val contents = dao.contentBySurah(surahNo)
             val verses = mutableListOf<Verse>()
             contents.forEach { verses.add(Verse(it)) }
@@ -52,23 +90,20 @@ class QuranApi(context: Context) {
             val surah = Surah(surahNo, surahInfo.name, surahInfo.nameAr, surahInfo.type,verses)
 
             callback.result(surah)
-        }.start()
+        }
     }
 
-    @Deprecated("This method is deprecated now.")
-    fun getSurahInfo(callback: SurahInfoCallback) { Thread { callback.result(dao.surahInfo()) }.start() }
-
     fun getByPage(pageNo: Int, callback: PageCallback) {
-        Thread {
+        ThreadExecutor.execute {
             val content = dao.contentByPage(pageNo)
             val verse: MutableList<Verse> = mutableListOf()
             content.forEach { verse.add(Verse(it)) }
 
             callback.result(listOf(Page(pageNo, verse)))
-        }.start()
+        }
     }
     fun getBySurah(surahNo: Int, pageCallback: PageCallback) {
-        Thread {
+        ThreadExecutor.execute {
             val pageNum = dao.getPageNumbersOfSurah(surahNo)
             val pages: MutableList<Page> = mutableListOf()
 
@@ -84,11 +119,10 @@ class QuranApi(context: Context) {
             }
 
             pageCallback.result(pages)
-        }.start()
+        }
     }
 
     fun interface VerseResultCallback { fun result(verse: Verse) }
     fun interface SurahResultCallback { fun result(surah: Surah) }
-    fun interface SurahInfoCallback { fun result(surahList: List<SurahInfo>) }
     fun interface PageCallback { fun result(page: List<Page>) }
 }

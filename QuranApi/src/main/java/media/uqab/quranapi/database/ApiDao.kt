@@ -1,7 +1,6 @@
 package media.uqab.quranapi.database
 
-import androidx.room.Dao
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ApiDao {

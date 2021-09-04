@@ -29,7 +29,7 @@ class FragmentPage(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val api = QuranApi(requireContext())
+        val api = QuranApi.getInstance(requireContext())
 
         val pageAdapter = PageAdapter()
         binding.recyclerView.adapter = pageAdapter
@@ -37,17 +37,17 @@ class FragmentPage(
 
         if (pageNo == -1001 && surahNo != -1001) {
             requireActivity().title = QuranApi.getSurahInfo(surahNo).name
-            Log.d(TAG, "onViewCreated: bySurah s:$surahNo p:$pageNo")
             api.getBySurah(surahNo) {
                 Log.d(TAG, "onViewCreated: ${it.size}")
+                Thread.sleep(1) // to remove glitch
                 requireActivity().runOnUiThread {
                     pageAdapter.submitPage(it)
                 }
             }
         }
         else if (pageNo != -1001 && surahNo == -1001) {
-            Log.d(TAG, "onViewCreated: byPage s:$surahNo p:$pageNo")
             api.getByPage(pageNo) {
+                Thread.sleep(1) // to remove glitch
                 requireActivity().runOnUiThread {
                     pageAdapter.submitPage(it)
                 }

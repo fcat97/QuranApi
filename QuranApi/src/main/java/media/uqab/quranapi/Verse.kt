@@ -3,6 +3,7 @@ package media.uqab.quranapi
 import media.uqab.quranapi.database.Content
 
 data class Verse(
+    val verseID: Int,
     val verse: String,
     val verseAr: String,
     val verseIndo: String,
@@ -10,6 +11,7 @@ data class Verse(
     val surahNo: Int
 ) {
     constructor(content: Content): this(
+        content.verseID,
         content.verse,
         content.verseAr,
         content.verseIndo,
