@@ -2,6 +2,7 @@ package media.uqab.apidemo
 
 import android.graphics.Color
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +22,10 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     private val TAG = "Adapter"
     private var verses: List<Verse> = listOf()
     private var spannedVerse: MutableList<Spanned> = mutableListOf()
+    private lateinit var quranApi: QuranApi
     @Volatile private var cached = false
 
-    class AyahHolder(private val binding: ItemAyahBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class AyahHolder(private val binding: ItemAyahBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(verse: Verse) {
             if (verse.verseNo % 2 == 0) {
                 val typedValue = TypedValue()
@@ -55,34 +57,29 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
             binding.surahName.text = QuranApi.getSurahInfo(verse.surahNo).nameAr
             binding.verseNo.text = verse.verseNo.toString()
             binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo)
+
+            /*if (cached) {
+                binding.textView.text = spannedVerse[adapterPosition]
+                Log.d(TAG, "onBindViewHolder: using cached")
+            } else {
+                Log.d(TAG, "onBindViewHolder: using raw")
+                binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo)
+            }*/
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AyahHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemAyahBinding.inflate(inflater, parent, false)
+        quranApi = QuranApi.getInstance(parent.context) // singleton so no problem
         return AyahHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: AyahHolder, position: Int) {
-        holder.bind(verses[position])
-        /*
-        if (cached) {
-            holder.textView.text = spannedVerse[position]
-            Log.d(TAG, "onBindViewHolder: using cached")
-        } else {
-            Log.d(TAG, "onBindViewHolder: using raw")
-            val verse = verses[position].verseIndo
-            holder.textView.text = TajweedApi.getTajweedColored(verse)
-        }*/
-    }
+    override fun onBindViewHolder(holder: AyahHolder, position: Int) { holder.bind(verses[position]) }
 
-    private fun getItem(position: Int): Spanned {
-        return spannedVerse[position]
-    }
-    override fun getItemCount(): Int {
-        return verses.size
-    }
+    private fun getItem(position: Int): Spanned { return spannedVerse[position] }
+
+    override fun getItemCount(): Int { return verses.size }
 
     fun submitList(verses: List<Verse>) {
         this.verses = verses
