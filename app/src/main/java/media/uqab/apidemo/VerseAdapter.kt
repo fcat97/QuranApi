@@ -21,19 +21,13 @@ import androidx.core.graphics.red
 class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     private val TAG = "Adapter"
     private var verses: List<Verse> = listOf()
-    private var spannedVerse: MutableList<Spanned> = mutableListOf()
     private lateinit var quranApi: QuranApi
-    @Volatile private var cached = false
+    private var alternateViewColor = -1000
 
     inner class AyahHolder(private val binding: ItemAyahBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(verse: Verse) {
-            if (verse.verseNo % 2 == 0) {
-                val typedValue = TypedValue()
-                binding.root.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
-                val colorPrimary = typedValue.data
-                val color = Color.argb(15, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
-                binding.root.setBackgroundColor(color)
-            } else binding.root.setBackgroundColor(Color.WHITE)
+            if (verse.verseNo % 2 == 0) { binding.root.setBackgroundColor(alternateViewColor) }
+            else binding.root.setBackgroundColor(Color.WHITE)
 
             binding.surahInfoLayout.visibility = if (verse.verseNo == 1) {
                 when (verse.surahNo){
@@ -56,15 +50,9 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
 
             binding.surahName.text = QuranApi.getSurahInfo(verse.surahNo).nameAr
             binding.verseNo.text = verse.verseNo.toString()
-            binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo)
 
-            /*if (cached) {
-                binding.textView.text = spannedVerse[adapterPosition]
-                Log.d(TAG, "onBindViewHolder: using cached")
-            } else {
-                Log.d(TAG, "onBindViewHolder: using raw")
-                binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo)
-            }*/
+            try { binding.textView.text = verse.spannedIndo }
+            catch (e: Exception) { binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo) }
         }
     }
 
@@ -72,22 +60,23 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemAyahBinding.inflate(inflater, parent, false)
         quranApi = QuranApi.getInstance(parent.context) // singleton so no problem
+
+        if (alternateViewColor == -1000) {
+            val typedValue = TypedValue()
+            parent.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val colorPrimary = typedValue.data
+            this.alternateViewColor = Color.argb(15, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
+        }
+
         return AyahHolder(binding)
     }
 
     override fun onBindViewHolder(holder: AyahHolder, position: Int) { holder.bind(verses[position]) }
-
-    private fun getItem(position: Int): Spanned { return spannedVerse[position] }
 
     override fun getItemCount(): Int { return verses.size }
 
     fun submitList(verses: List<Verse>) {
         this.verses = verses
         notifyDataSetChanged()
-//        Thread {
-//            // make a cache for spannedString.. It will make UI load faster
-//            for (verse in verses) { spannedVerse.add(TajweedApi.getTajweedColored(verse.verseIndo)) }
-//            cached = true
-//        }.start()
     }
 }

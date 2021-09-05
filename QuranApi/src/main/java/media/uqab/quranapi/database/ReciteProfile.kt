@@ -9,9 +9,9 @@ package media.uqab.quranapi.database
 class ReciteProfile {
     private val profile: HashMap<Int, Profile> = hashMapOf()
 
-    infix fun isPresent(profileID: Int): Boolean { return profile.containsKey(profileID) }
-    fun getProfile(profileID: Int): Profile? = if (profile.containsKey(profileID)) { profile[profileID] } else {null}
-    fun setProfile(profile: Profile) { this.profile[profile.profileID] = profile }
+    infix fun isPresent(verseID: Int): Boolean { return profile.containsKey(verseID) }
+    fun getProfile(verseID: Int): Profile? = if (profile.containsKey(verseID)) { profile[verseID] } else {null}
+    fun setProfile(verseID: Int, profile: Profile) { this.profile[verseID] = profile }
     fun getAllProfile(): MutableCollection<Profile> { return profile.values }
 
 

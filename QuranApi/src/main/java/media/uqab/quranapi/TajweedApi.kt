@@ -57,10 +57,8 @@ object TajweedApi {
      */
     fun getTajweedColored(verse: String): Spanned {
         val spannable = SpannableString(verse)
-        for (i in verse.indices) Log.d(TAG, "getTajweedColored: ${toUnicode(verse[i])} --> ${verse[i]}")
-
-//        Log.d(TAG, "getTajweedColored: $pattern_nuun_sakin")
-
+//        for (i in verse.indices) Log.d(TAG, "getTajweedColored: ${toUnicode(verse[i])} --> ${verse[i]}")
+        
         // TODO: this needs too much computation.. So make it fast
         applySpan(pattern_wazeebGunnah, verse, wazeebGunnahColor, spannable)
         applySpan(pattern_iqfaa, verse, iqfaaColor, spannable)
@@ -73,24 +71,26 @@ object TajweedApi {
     }
 
     private fun getNuunSakin() = buildString {
-        this.append("(")
+        this.append('(')
         this.append(nuun)
-        this.append("[")
+        this.append('[')
         for (c in sakin) this.append(c)
-        this.append("]")
+        this.append(']')
         // tanween also included
-        this.append("|")
+        this.append('|')
         this.append("\\p{L}?")
         this.append(tashdeed)
-        this.append("?")
-        this.append("[")
+        this.append('?')
+        this.append('[')
         for (c in tanween) this.append(c)
-        this.append("]")
-        this.append(")")
-        this.append(" ?")
+        this.append(']')
+//        this.append(alif)
+//        this.append('?')
+        this.append(')')
+        this.append('?')
     }
     private fun getHarqatPattern() = buildString {
-        this.append("[")
+        this.append('{')
         for (c in harqat) this.append(c)
         for (c in tanween) this.append(c)
         this.append(superscriptAlif)
@@ -100,19 +100,19 @@ object TajweedApi {
     }
 
     private fun getQalqalahPatter() = buildString {
-        this.append("[")
+        this.append('{')
         for (c in qalqalah) this.append(c)
-        this.append("]")
-        this.append("[")
+        this.append(']')
+        this.append('{')
         for (c in sakin) this.append(c)
-        this.append("]")
+        this.append(']')
     }
 
     private fun getIqfaaPattern() = buildString {
         this.append(getNuunSakin())
-        this.append("[")
+        this.append('{')
         for (c in iqfaa) this.append(c)
-        this.append("]")
+        this.append(']')
         this.append(getHarqatPattern())
     }
 
@@ -126,42 +126,42 @@ object TajweedApi {
 
     private fun getIdgaamWithGunnahPattern() = buildString {
         this.append(getNuunSakin())
-        this.append("[")
+        this.append('{')
         for (c in harf_idgam_withGunnah) this.append(c)
-        this.append("]")
+        this.append(']')
         this.append(tashdeed)
-        this.append("?")
+        this.append('?')
 
         // here we don't use the getHarqatPattern()
         // since `U+06cc` sometime acts as extra harf which has no gunnah
-        this.append("[")
+        this.append('{')
         for (c in harqat) this.append(c)
         for (c in tanween) this.append(c)
         this.append(superscriptAlif)
         this.append(subscriptAlif)
         this.append(invertedDamma)
-        this.append("]") // <--- here we don't add '?' i.e. it's must, not optional
+        this.append(']') // <--- here we don't add '?' i.e. it's must, not optional
     }
 
     private fun getIdgaamWithOutGunnahPattern() = buildString {
         this.append(getNuunSakin())
-        this.append("[")
+        this.append('{')
         for (c in harf_idgam_withoutGunnah) this.append(c)
-        this.append("]")
+        this.append(']')
         this.append(tashdeed)
-        this.append("?")
+        this.append('?')
         this.append(getHarqatPattern())
     }
 
     private fun getWazeebGunnah() = buildString {
-        this.append("[")
+        this.append('{')
         this.append(nuun)
         this.append(meem)
-        this.append("]")
+        this.append(']')
         this.append(tashdeed)
         this.append(getHarqatPattern())
         this.append(maddah)
-        this.append("?")
+        this.append('?')
 //        this.append(getHarqatPattern())
     }
 
@@ -170,7 +170,7 @@ object TajweedApi {
                           color: Int,
                           spannable: Spannable,
                           endOffset: Int = 1,
-                          logTag: String = "applySpan") {
+                          /*debug*/ logTag: String = "applySpan") {
         val range = regex.findAll(verse)
         for (r in range) {
 //            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last + 2)}")

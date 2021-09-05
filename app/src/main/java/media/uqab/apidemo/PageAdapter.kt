@@ -1,6 +1,7 @@
 package media.uqab.apidemo
 
 import android.graphics.Color
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,12 @@ import androidx.core.graphics.red
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import media.uqab.quranapi.Page
+import kotlin.properties.Delegates
 
 class PageAdapter: RecyclerView.Adapter<PageAdapter.PageHolder>(){
+    private val TAG = "PageAdapter"
     private var pageList: List<Page> = listOf()
+    private var pageTitleColor = -1000
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
@@ -34,24 +38,27 @@ class PageAdapter: RecyclerView.Adapter<PageAdapter.PageHolder>(){
             layoutManager.initialPrefetchItemCount = 4
             recyclerView.layoutManager = layoutManager
 
-            val typedValue = TypedValue()
-            textView.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
-            val colorPrimary = typedValue.data
-            val color = Color.argb(120, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
-            textView.setBackgroundColor(color)
+            textView.setBackgroundColor(pageTitleColor)
         }
 
         fun bind(page: Page) {
             val text = "Page: ${page.pageNo}"
             textView.text = text
             adapter.submitList(page.verse)
-            adapter.notifyDataSetChanged()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PageHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_page, parent, false)
+
+        if (pageTitleColor == -1000) {
+            val typedValue = TypedValue()
+            parent.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val colorPrimary = typedValue.data
+            this.pageTitleColor = Color.argb(120, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
+        }
+
         return PageHolder(view)
     }
 

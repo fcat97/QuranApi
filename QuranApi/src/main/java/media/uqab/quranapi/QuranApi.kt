@@ -62,7 +62,7 @@ class QuranApi(context: Context) {
         fun saveReciteProfile(context: Context,
                               verseID: Int,
                               profile: ReciteProfile.Profile) {
-            reciteProfile.setProfile(profile)
+            reciteProfile.setProfile(verseID, profile)
             val fileDir = context.getExternalFilesDir("data").toString()
             val file = File(fileDir, reciteProfileFileName)
             ThreadExecutor.execute {
