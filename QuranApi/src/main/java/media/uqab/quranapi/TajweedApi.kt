@@ -87,10 +87,9 @@ object TajweedApi {
 //        this.append(alif)
 //        this.append('?')
         this.append(')')
-        this.append('?')
     }
     private fun getHarqatPattern() = buildString {
-        this.append('{')
+        this.append('[')
         for (c in harqat) this.append(c)
         for (c in tanween) this.append(c)
         this.append(superscriptAlif)
@@ -100,17 +99,17 @@ object TajweedApi {
     }
 
     private fun getQalqalahPatter() = buildString {
-        this.append('{')
+        this.append('[')
         for (c in qalqalah) this.append(c)
         this.append(']')
-        this.append('{')
+        this.append('[')
         for (c in sakin) this.append(c)
         this.append(']')
     }
 
     private fun getIqfaaPattern() = buildString {
         this.append(getNuunSakin())
-        this.append('{')
+        this.append('[')
         for (c in iqfaa) this.append(c)
         this.append(']')
         this.append(getHarqatPattern())
@@ -126,7 +125,7 @@ object TajweedApi {
 
     private fun getIdgaamWithGunnahPattern() = buildString {
         this.append(getNuunSakin())
-        this.append('{')
+        this.append('[')
         for (c in harf_idgam_withGunnah) this.append(c)
         this.append(']')
         this.append(tashdeed)
@@ -134,7 +133,7 @@ object TajweedApi {
 
         // here we don't use the getHarqatPattern()
         // since `U+06cc` sometime acts as extra harf which has no gunnah
-        this.append('{')
+        this.append('[')
         for (c in harqat) this.append(c)
         for (c in tanween) this.append(c)
         this.append(superscriptAlif)
@@ -145,7 +144,7 @@ object TajweedApi {
 
     private fun getIdgaamWithOutGunnahPattern() = buildString {
         this.append(getNuunSakin())
-        this.append('{')
+        this.append('[')
         for (c in harf_idgam_withoutGunnah) this.append(c)
         this.append(']')
         this.append(tashdeed)
@@ -154,7 +153,7 @@ object TajweedApi {
     }
 
     private fun getWazeebGunnah() = buildString {
-        this.append('{')
+        this.append('[')
         this.append(nuun)
         this.append(meem)
         this.append(']')
@@ -174,7 +173,7 @@ object TajweedApi {
         val range = regex.findAll(verse)
         for (r in range) {
 //            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last + 2)}")
-            spannable.setSpan(ForegroundColorSpan(color),
+    spannable.setSpan(ForegroundColorSpan(color),
                 r.range.first, r.range.last + endOffset,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }

@@ -108,11 +108,11 @@ class QuranApi(context: Context) {
             val pages: MutableList<Page> = mutableListOf()
 
             for (num in pageNum) {
-                Log.d(TAG, "getBySurah: pageNo $num")
+//                Log.d(TAG, "getBySurah: pageNo $num")
                 val verses: MutableList<Verse> = mutableListOf()
                 val content = dao.contentByPage(num, surahNo)
                 content.forEach { verses.add(Verse(it))
-                    Log.d(TAG, "getBySurah: content ${it.verseIndo}")
+//                    Log.d(TAG, "getBySurah: content ${it.verseIndo}")
                 }
 
                 pages.add(Page(num, verses))
