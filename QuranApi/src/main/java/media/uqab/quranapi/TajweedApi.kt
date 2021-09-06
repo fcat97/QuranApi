@@ -16,6 +16,7 @@ object TajweedApi {
     private const val TAG = "TajweedApi"
     private val iqfaa = listOf('ت','ث','ج','د','ذ','ز','س','ش','ص','ض','ط','ظ','ف','ق','ك','ک') // U+06a9(alt kaaf, keheh)
     private val qalqalah = listOf('ق','ط','ب','ج','د')
+    private const val alif = 'ا' // U+0627
     private const val meem = 'م' // U+0645
     private const val nuun = 'ن' // U+0646
     private const val baa = 'ب' // U+0628
@@ -28,7 +29,7 @@ object TajweedApi {
     private const val subscriptAlif = 'ٖ' //  U+0656 vertical kasra/খাড়া জের
     private const val invertedDamma = 'ٗ' // U+0657
     private val sakin = listOf('ۡ','ْ') // U+06e1, U+0652
-    private const val meem_isolated = 'ۢ' // U+06e2
+    private val meem_isolated = listOf('ۢ', 'ۭ') // U+06e2, U+06ed
     private val harf_idgam_withGunnah = listOf('ی','ى','و','م','ن') // U+06cc(farsi ya) U+064a, U+0648, U+0645, U+0646
     private val harf_idgam_withoutGunnah = listOf('ر','ل') // U+0631, U+0644
 
@@ -84,8 +85,8 @@ object TajweedApi {
         this.append('[')
         for (c in tanween) this.append(c)
         this.append(']')
-//        this.append(alif)
-//        this.append('?')
+        this.append(alif)
+        this.append('?')
         this.append(')')
         this.append(" ?")
     }
@@ -119,7 +120,9 @@ object TajweedApi {
 
     private fun getIqlabPattern() =  buildString {
         this.append(getNuunSakin())
-        this.append(meem_isolated)
+        this.append('[')
+        for (c in meem_isolated) this.append(c)
+        this.append(']')
         this.append("? ?")
         this.append(baa)
         this.append(getHarqatPattern())
