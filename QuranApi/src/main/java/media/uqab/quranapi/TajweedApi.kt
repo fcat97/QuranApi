@@ -87,7 +87,9 @@ object TajweedApi {
 //        this.append(alif)
 //        this.append('?')
         this.append(')')
+        this.append(" ?")
     }
+
     private fun getHarqatPattern() = buildString {
         this.append('[')
         for (c in harqat) this.append(c)
