@@ -58,15 +58,16 @@ object TajweedApi {
      */
     fun getTajweedColored(verse: String): Spanned {
         val spannable = SpannableString(verse)
+        // log each character with unicode value of the verse
 //        for (i in verse.indices) Log.d(TAG, "getTajweedColored: ${toUnicode(verse[i])} --> ${verse[i]}")
-        
+
         // TODO: this needs too much computation.. So make it fast
-        applySpan(pattern_wazeebGunnah, verse, wazeebGunnahColor, spannable)
-        applySpan(pattern_iqfaa, verse, iqfaaColor, spannable)
-        applySpan(pattern_iqlab, verse, iqlabColor, spannable)
-        applySpan(pattern_idgaan_wg, verse, idgamWithGunnahColor, spannable)
-        applySpan(pattern_idgaan_wog, verse, idgamWithOutGunnahColor, spannable, endOffset = -3)
-        applySpan(pattern_qalqalah, verse, qalqalahColor, spannable)
+        applySpan(pattern_wazeebGunnah, verse, wazeebGunnahColor, spannable, logTag = "wazeebGunnah")
+        applySpan(pattern_iqfaa, verse, iqfaaColor, spannable, logTag = "iqfaa")
+        applySpan(pattern_iqlab, verse, iqlabColor, spannable, logTag = "iqlab")
+        applySpan(pattern_idgaan_wg, verse, idgamWithGunnahColor, spannable, logTag = "idgam_wg")
+        applySpan(pattern_idgaan_wog, verse, idgamWithOutGunnahColor, spannable, endOffset = -3, logTag = "idgam_wog")
+        applySpan(pattern_qalqalah, verse, qalqalahColor, spannable, logTag = "qalqalah")
 
         return spannable
     }
@@ -133,8 +134,6 @@ object TajweedApi {
         this.append('[')
         for (c in harf_idgam_withGunnah) this.append(c)
         this.append(']')
-        this.append(tashdeed)
-        this.append('?')
 
         // here we don't use the getHarqatPattern()
         // since `U+06cc` sometime acts as extra harf which has no gunnah
@@ -145,6 +144,9 @@ object TajweedApi {
         this.append(subscriptAlif)
         this.append(invertedDamma)
         this.append(']') // <--- here we don't add '?' i.e. it's must, not optional
+
+        this.append(tashdeed)
+        this.append('?')
     }
 
     private fun getIdgaamWithOutGunnahPattern() = buildString {
@@ -174,11 +176,11 @@ object TajweedApi {
                           color: Int,
                           spannable: Spannable,
                           endOffset: Int = 1,
-                          /*debug*/ logTag: String = "applySpan") {
+        /*debug*/ logTag: String = "applySpan") {
         val range = regex.findAll(verse)
         for (r in range) {
-//            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last + 2)}")
-    spannable.setSpan(ForegroundColorSpan(color),
+            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last)}")
+            spannable.setSpan(ForegroundColorSpan(color),
                 r.range.first, r.range.last + endOffset,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }

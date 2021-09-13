@@ -2,7 +2,10 @@ package media.uqab.apidemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import media.uqab.quranapi.QuranApi
+import media.uqab.quranapi.TajweedApi
 
 
 class MainActivity : AppCompatActivity() {
@@ -11,10 +14,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        debug()
+
         val fragmentSurahList = FragmentSurahList { openFragmentBySurah(it) }
         supportFragmentManager.beginTransaction()
             .add(R.id.container, fragmentSurahList)
             .commit();
+    }
+
+    private fun debug() {
+        val api = QuranApi(this)
+        api.getVerse(39, 6) { Log.d(TAG, "debug: $it")}
     }
 
     private fun openFragmentBySurah(surahNo: Int) {

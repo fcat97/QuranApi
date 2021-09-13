@@ -12,8 +12,8 @@ class SurahListAdapter(val listener: ItemClickListener): RecyclerView.Adapter<Su
     private var surahInfo: List<SurahInfo> = listOf()
 
     class SurahHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var surahName: TextView = itemView.findViewById(R.id.surahName)
-        var surahNo: TextView = itemView.findViewById(R.id.surahNo)
+        var surahName: TextView = itemView.findViewById(R.id.name)
+        var surahNo: TextView = itemView.findViewById(R.id.index)
         var info: TextView = itemView.findViewById(R.id.info)
         var calligraphy: TextView = itemView.findViewById(R.id.calligraphyName)
     }
@@ -29,7 +29,8 @@ class SurahListAdapter(val listener: ItemClickListener): RecyclerView.Adapter<Su
 
         holder.surahName.text = surahInfo.name
         holder.surahNo.text = (surahInfo.surahNo).toString()
-        holder.info.text = surahInfo.type
+        val info = "Verses ${surahInfo.verseCount}. ${surahInfo.type}"
+        holder.info.text = info
         holder.calligraphy.text = QuranApi.getSurahInfo(surahInfo.surahNo).nameAr
 
         holder.itemView.setOnClickListener { listener.onClick(surahInfo.surahNo) }
