@@ -46,7 +46,7 @@ api.getSurah(2) {
 }
 ```
 
-More Advance uses is implemented in App.. Explore it...
+A fully functional app source is included in this repo. For more detail see the [How to](wiki/howTo.md)
 
 >
 
