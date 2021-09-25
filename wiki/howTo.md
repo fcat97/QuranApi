@@ -1,4 +1,4 @@
-بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ
+![](bismillah.png)
 
 #QuranApi
 
@@ -8,7 +8,7 @@ efforts of adding Quran inside Android Application.
 In muslim community there are several writing formats of the Quran. Though these
 formats have the same verses, but the writing style is slightly different from each other.
 
-This projects includes three of these style.
+This projects includes three of these styles.
 
     1. IndoPak style with minimal Harqat
     2. Saudi style without any Harqat
@@ -63,18 +63,18 @@ api.getSurah(surahIndex) { /*it: surah*/
 
 Each Surah contains these informations
 
-- surahNo: index of Surah
-- name: Surah name in English
-- nameAr: Surah name in Arabic
-- type: Makkiah or Madaniyah
-- verses: verses of this surah
+- **surahNo**: index of Surah
+- **name**: Surah name in English
+- **nameAr**: Surah name in Arabic
+- **type**: Makkiah or Madaniyah
+- **verses**: verses of this surah
 
 #### To get a Page
-i.e. IndoPak page which is also known as Hafeji Quran in Indian subcontinet,
+i.e. IndoPak page which is also known as Hafeji Quran in Indian subcontinent,
 you have two options:
 
-1. Either get a single page,
-2. Or the surah with pages.
+1. Either get a single page. Or,
+2. The surah with pages.
 
 ```kotlin
 api.getByPage(pageNo) {
@@ -87,7 +87,7 @@ api.getBySurah(surahNo) {
 }
 ```
 
-Since each verse contains information about surahNo,
+Since each verse contains information about **surahNo**,
 you can query Surah information by static method as described above.
 
 
@@ -97,21 +97,18 @@ Currently tajweed color of IndoPak format is included inside each verse.
 But you can query it by yourself.
 
 ```kotlin
-TajweedApi.getTajweedColored(verse.verseIndo) // only IndoPak is avaiable now
+TajweedApi.getTajweedColored(verse.verseIndo) // only IndoPak is avaiable for now
 ```
 
 The spanned verse is created on a separate thread.
 This is done for performance improvement, since calculation of each tajweed is CPU intensive.
-So use it with try..catch
-For example, in recyclerView
+So use it with **try..catch**
+For example, in **recyclerView**
 
 ```kotlin
 try { binding.textView.text = verse.spannedIndo }
 catch (e: Exception) { binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo) }
 ```
 
-A full working app is included in this repo. So examine this how the api is used.
-
 This project is in very early stage. So feel free to issue any bug you find.
 You can also contribute to this project.
-
