@@ -34,16 +34,12 @@ dependencies {
 You can use as you wish. Here is a sample usage shown
 
 ```kotlin
-val api = QuranApi(this)
 val recyclerView = findViewById<RecyclerView>(R.id.textView)
 val adapter = Adapter()
 recyclerView.adapter = adapter
 
-api.getSurah(2) {
-    runOnUiThread {
-        adapter.submitList(it.verses)
-    }
-}
+val api = QuranApi(this)
+api.getSurah(2) { adapter.submitList(it.verses) }
 ```
 
 A fully functional app source is included in this repo. For more detail see the [How to](wiki/howTo.md)

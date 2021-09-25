@@ -14,32 +14,38 @@
         android:background="@drawable/circle_background"
         android:fontFamily="@font/serat_ultra"
         android:gravity="center"
-        android:text="1"
+        android:text="@string/_1"
         android:textAlignment="center"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/index"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/backslash"
-        android:layout_toStartOf="@id/calligraphyName"
-        android:layout_marginStart="16dp"
-        android:text="Surah Fatiha"/>
+        android:orientation="vertical"
 
-    <TextView
-        android:id="@+id/info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:layout_alignStart="@id/name"
-        android:layout_alignEnd="@id/name"
-        android:textSize="12sp"
-        android:text="Surah Fatiha"
-        android:textColor="@color/colorGrayDark" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/calligraphyName"
+        android:layout_toEndOf="@id/index">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/backslash"
+            android:text="@string/surah_fatiha"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/surah_fatiha"
+            android:textColor="@color/colorGrayDark" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <TextView
         android:id="@+id/calligraphyName"
@@ -49,7 +55,7 @@
         android:layout_centerVertical="true"
         android:textColor="@color/black"
         android:fontFamily="@font/me_quran"
-        android:text="Suratul Fatiha"
+        android:text="@string/surah_fatiha"
         android:textAlignment="center"
         android:textSize="24sp" />
 </RelativeLayout>

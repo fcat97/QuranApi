@@ -34,23 +34,20 @@ class FragmentPage(
         val pageAdapter = PageAdapter()
         binding.recyclerView.adapter = pageAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.backButton.setOnClickListener { parentFragmentManager.popBackStack() }
 
         if (pageNo == -1001 && surahNo != -1001) {
-            requireActivity().title = QuranApi.getSurahInfo(surahNo).name
+            binding.toolbar.title = "${surahNo}. ${QuranApi.getSurahInfo(surahNo).name}"
             api.getBySurah(surahNo) {
                 Log.d(TAG, "onViewCreated: ${it.size}")
-                Thread.sleep(1) // to remove glitch
-                requireActivity().runOnUiThread {
-                    pageAdapter.submitPage(it)
-                }
+//                Thread.sleep(1) // to remove glitch
+                pageAdapter.submitPage(it)
             }
         }
         else if (pageNo != -1001 && surahNo == -1001) {
             api.getByPage(pageNo) {
-                Thread.sleep(1) // to remove glitch
-                requireActivity().runOnUiThread {
-                    pageAdapter.submitPage(it)
-                }
+//                Thread.sleep(1) // to remove glitch
+                pageAdapter.submitPage(it)
             }
         }
     }

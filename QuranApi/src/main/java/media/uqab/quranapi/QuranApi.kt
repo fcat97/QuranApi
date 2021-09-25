@@ -2,6 +2,7 @@ package media.uqab.quranapi
 
 import android.content.Context
 import android.util.Log
+import androidx.core.content.ContextCompat
 import media.uqab.quranapi.database.ApiDatabase
 import media.uqab.quranapi.database.SurahInfo
 
@@ -18,6 +19,7 @@ import java.nio.charset.StandardCharsets
 
 class QuranApi(context: Context) {
     private val dao = ApiDatabase.getInstance(context).apiDao
+    private val mainExe = ContextCompat.getMainExecutor(context)
 
     companion object {
         private const val TAG = "QuranApi"
@@ -77,7 +79,9 @@ class QuranApi(context: Context) {
     fun getVerse(surahNo: Int, verseNo: Int, callback: VerseResultCallback) {
         ThreadExecutor.execute {
             val content = dao.contentByVerse(surahNo, verseNo)
-            callback.result(Verse(content))
+            mainExe.execute {
+                callback.result(Verse(content))
+            }
         }
     }
     fun getSurah(surahNo: Int, callback: SurahResultCallback) {
@@ -89,7 +93,9 @@ class QuranApi(context: Context) {
             val surahInfo = dao.surahInfo(surahNo)
             val surah = Surah(surahNo, surahInfo.name, surahInfo.nameAr, surahInfo.type,verses)
 
-            callback.result(surah)
+            mainExe.execute {
+                callback.result(surah)
+            }
         }
     }
 
@@ -99,7 +105,9 @@ class QuranApi(context: Context) {
             val verse: MutableList<Verse> = mutableListOf()
             content.forEach { verse.add(Verse(it)) }
 
-            callback.result(listOf(Page(pageNo, verse)))
+            mainExe.execute {
+                callback.result(listOf(Page(pageNo, verse)))
+            }
         }
     }
     fun getBySurah(surahNo: Int, pageCallback: PageCallback) {
@@ -118,7 +126,9 @@ class QuranApi(context: Context) {
                 pages.add(Page(num, verses))
             }
 
-            pageCallback.result(pages)
+            mainExe.execute {
+                pageCallback.result(pages)
+            }
         }
     }
 

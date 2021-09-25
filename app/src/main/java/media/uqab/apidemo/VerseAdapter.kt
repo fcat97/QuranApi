@@ -36,7 +36,7 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
                         binding.basmalah.visibility = View.GONE
                     }
                     9 -> {
-                        binding.taAudh.visibility = View.GONE
+                        binding.taAudh.visibility = View.VISIBLE
                         binding.basmalah.visibility = View.GONE
                     }
                     else -> {

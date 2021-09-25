@@ -17,25 +17,25 @@
             android:text="Suratul Fatiha"
             android:textSize="40sp"
             android:textColor="@color/black"
-            android:fontFamily="@font/pdms_islamic"
+            android:fontFamily="@font/amiri"
             android:textAlignment="center"/>
         <TextView
             android:id="@+id/ta_audh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ta_audh"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textColor="@color/black"
-            android:fontFamily="@font/pdms_islamic"
+            android:fontFamily="@font/amiri"
             android:textAlignment="center"/>
         <TextView
             android:id="@+id/basmalah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/basmalah"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textColor="@color/black"
-            android:fontFamily="@font/pdms_islamic"
+            android:fontFamily="@font/amiri"
             android:textAlignment="center"/>
 
     </LinearLayout>
