@@ -4,6 +4,9 @@ import androidx.room.*
 
 @Dao
 interface ApiDao {
+    @Query("SELECT * FROM verses_content WHERE verseID IS :verseID")
+    fun contentByVerseID(verseID: Int): Content
+
     @Query("SELECT * FROM verses_content WHERE surahNo = :surahNo AND verseNo = :verseNo ORDER BY verseID ASC")
     fun contentByVerse(surahNo: Int, verseNo: Int): Content
 

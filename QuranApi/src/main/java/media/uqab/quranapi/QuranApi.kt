@@ -76,12 +76,17 @@ class QuranApi(context: Context) {
         }
     }
 
+    fun getVerse(verseIndex: Int, callback: VerseResultCallback) {
+        ThreadExecutor.execute {
+            val content = dao.contentByVerseID(verseIndex)
+            val verse = Verse(content)
+            mainExe.execute { callback.result(verse) }
+        }
+    }
     fun getVerse(surahNo: Int, verseNo: Int, callback: VerseResultCallback) {
         ThreadExecutor.execute {
             val content = dao.contentByVerse(surahNo, verseNo)
-            mainExe.execute {
-                callback.result(Verse(content))
-            }
+            mainExe.execute { callback.result(Verse(content)) }
         }
     }
     fun getSurah(surahNo: Int, callback: SurahResultCallback) {
@@ -93,9 +98,7 @@ class QuranApi(context: Context) {
             val surahInfo = dao.surahInfo(surahNo)
             val surah = Surah(surahNo, surahInfo.name, surahInfo.nameAr, surahInfo.type,verses)
 
-            mainExe.execute {
-                callback.result(surah)
-            }
+            mainExe.execute { callback.result(surah) }
         }
     }
 

@@ -9,7 +9,8 @@ data class Verse(
     val verseAr: String,
     val verseIndo: String,
     val verseNo: Int,
-    val surahNo: Int
+    val surahNo: Int,
+    val pageIndoNo: Int
 ) {
     lateinit var spannedIndo: Spanned
 
@@ -21,6 +22,7 @@ data class Verse(
         content.verseAr,
         content.verseIndo,
         content.verseNo,
-        content.surahNo
+        content.surahNo,
+        content.pageIndo
     )
 }
