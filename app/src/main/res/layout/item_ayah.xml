@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/pageNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:padding="4dp"
+        android:text="Page 20"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:id="@+id/surahInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:layout_below="@id/pageNo"
         android:orientation="vertical">
         <TextView
             android:id="@+id/surahName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Suratul Fatiha"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textColor="@color/black"
             android:fontFamily="@font/amiri"
             android:textAlignment="center"/>
@@ -48,26 +61,28 @@
         android:layout_below="@id/surahInfoLayout"
         android:layout_margin="12dp"/>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/verseNo"
-        android:padding="16dp"
-        android:textSize="32sp"
-        android:textColor="@android:color/black"
-        android:text="@string/surah_fatiha"
-        android:textAlignment="viewEnd"
-        android:fontFamily="@font/noorehuda"/>
-
     <ImageButton
         android:id="@+id/moreButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_more_horiz"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackground"
         android:layout_toEndOf="@id/verseNo"
         android:layout_alignTop="@id/verseNo"
         tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/verseText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/verseNo"
+        android:fontFamily="@font/noorehuda"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/surah_fatiha_verses"
+        android:textAlignment="viewEnd"
+        android:textColor="@android:color/black"
+        android:textSize="32sp" />
 
 </RelativeLayout>

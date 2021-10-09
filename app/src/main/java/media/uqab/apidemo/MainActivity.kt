@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun debug() {
-        val api = QuranApi(this)
+        val api = QuranApi.getInstance(this)
         api.getVerse(39, 6) { Log.d(TAG, "debug: $it")}
     }
 

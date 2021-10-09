@@ -5,7 +5,7 @@ open class SingletonHolder<out T: Any, in A>(creator: (A) -> T) {
     private var creator: ((A) -> T)? = creator
     @Volatile private var instance: T? = null
 
-    fun getInstance(arg: A): T {
+    fun getInstance(context: A): T {
         val checkInstance = instance
         if (checkInstance != null) {
             return checkInstance
@@ -16,7 +16,7 @@ open class SingletonHolder<out T: Any, in A>(creator: (A) -> T) {
             if (checkInstanceAgain != null) {
                 checkInstanceAgain
             } else {
-                val created = creator!!(arg)
+                val created = creator!!(context)
                 instance = created
                 creator = null
                 created

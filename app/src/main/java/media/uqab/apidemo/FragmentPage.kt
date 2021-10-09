@@ -13,7 +13,8 @@ import media.uqab.quranapi.QuranApi
 
 class FragmentPage(
     private val pageNo: Int = -1001,
-    private var surahNo: Int = -1001): Fragment() {
+    private var surahNo: Int = -1001
+): Fragment() {
     private lateinit var binding: FragmentPageBinding
     private val TAG = "FragmentPage"
 
@@ -31,24 +32,24 @@ class FragmentPage(
 
         val api = QuranApi.getInstance(requireContext())
 
-        val pageAdapter = PageAdapter()
-        binding.recyclerView.adapter = pageAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        binding.backButton.setOnClickListener { parentFragmentManager.popBackStack() }
+        val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.recyclerView.layoutManager = layoutManager
 
         if (pageNo == -1001 && surahNo != -1001) {
+            val verseAdapter = VerseAdapter()
+            binding.recyclerView.adapter = verseAdapter
             binding.toolbar.title = "${surahNo}. ${QuranApi.getSurahInfo(surahNo).name}"
-            api.getBySurah(surahNo) {
-                Log.d(TAG, "onViewCreated: ${it.size}")
-//                Thread.sleep(1) // to remove glitch
-                pageAdapter.submitPage(it)
-            }
+
+            api.getSurah(surahNo) { verseAdapter.submitList(it.verses) }
         }
         else if (pageNo != -1001 && surahNo == -1001) {
+            val pageAdapter = PageAdapter()
+            binding.recyclerView.adapter = pageAdapter
             api.getByPage(pageNo) {
-//                Thread.sleep(1) // to remove glitch
                 pageAdapter.submitPage(it)
             }
         }
+
+        binding.backButton.setOnClickListener { parentFragmentManager.popBackStack() }
     }
 }
