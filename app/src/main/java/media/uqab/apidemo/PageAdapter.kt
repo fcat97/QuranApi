@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import media.uqab.quranapi.Page
 import kotlin.properties.Delegates
 
+@Deprecated("Deprecated")
 class PageAdapter: RecyclerView.Adapter<PageAdapter.PageHolder>(){
     private val TAG = "PageAdapter"
     private var pageList: List<Page> = listOf()

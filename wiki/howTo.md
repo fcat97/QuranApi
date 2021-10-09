@@ -10,9 +10,11 @@ formats have the same verses, but the writing style is slightly different from e
 
 This projects includes three of these styles.
 
-    1. IndoPak style with minimal Harqat
-    2. Saudi style without any Harqat
-    3. International with extra Harqats
+    1. IndoPak(hafeji) style with minimal Harqat
+    2. Arabic without any Harqat
+    3. International(uthmani)
+
+![](verse_styles.png)
 
 Currently this Project is focused on IndoPak style of Quran.
 
@@ -43,7 +45,8 @@ Each Verse contains information about
 - **verseIndo:** IndoPak style of writing
 - **verseNo:** Index of Verse in Surah
 - **surahNo:** Index of Surah
-- **spannedIndo:** Spanned object of IndoPak style verse
+- **pageIndoNo:** Page number of this verse in Hafeji Quran
+- **spannedIndo:** Spanned object of IndoPak style verse. Created on separate thread, so use with `try...catch`
 
 #### To get all the surah information:
 
@@ -90,24 +93,27 @@ api.getBySurah(surahNo) {
 Since each verse contains information about **surahNo**,
 you can query Surah information by static method as described above.
 
+**Note:** You may not need to use `getBySurah()` since `getSurah()` will return verses of that surah
+and all the verses has information of the page they belongs to. See the use of `VerseAdapter` in
+`app` module for better understanding.
 
 #### To get Tajweed Color:
 
-Currently tajweed color of IndoPak format is included inside each verse.
-But you can query it by yourself.
+Currently tajweed color of only *IndoPak* format is included inside each verse.
+You can use any string in Arabic formatted as *IndoPak* style to get a spanned text with tajweed colors.
 
 ```kotlin
 TajweedApi.getTajweedColored(verse.verseIndo) // only IndoPak is avaiable for now
 ```
 
-The spanned verse is created on a separate thread.
+The spanned verse is created on a separate thread while user query for Verse.
 This is done for performance improvement, since calculation of each tajweed is CPU intensive.
 So use it with **try..catch**
 For example, in **recyclerView**
 
 ```kotlin
 try { binding.textView.text = verse.spannedIndo }
-catch (e: Exception) { binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo) }
+catch (ignored: Exception) { binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo) }
 ```
 
 This project is in very early stage. So feel free to issue any bug you find.

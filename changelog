@@ -1,5 +1,18 @@
-quranApi v0.4.28
------------------------------
+App v0.4.39
+---------------
+- PageAdapter deprecated
+- added Verse.pageNo
+- VerseAdapter shows page no
+- Performance boosted
 
+QuranApi v0.4.37
+----------------
+- TajweedApi log messege hidden
+- QuranApi is now Singleton
+- Redundent Methods from QuranApi removed
+
+
+QuranApi v0.4.28
+----------------
 - api results now returns on MainThread by default
 - app UI updated
