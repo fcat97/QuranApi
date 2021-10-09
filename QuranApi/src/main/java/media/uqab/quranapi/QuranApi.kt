@@ -17,32 +17,15 @@ import java.lang.reflect.Type
 import java.nio.charset.StandardCharsets
 
 
-class QuranApi(context: Context) {
+class QuranApi private constructor(context: Context) {
     private val dao = ApiDatabase.getInstance(context).apiDao
     private val mainExe = ContextCompat.getMainExecutor(context)
 
-    companion object {
+//    companion object: SingletonHolder<QuranApi, Context>(::QuranApi)
+
+    companion object: SingletonHolder<QuranApi, Context>(::QuranApi) {
         private const val TAG = "QuranApi"
-        private const val reciteProfileFileName = "reciteProfile"
-        private lateinit var api: QuranApi
         private lateinit var infoList: List<SurahInfo>
-        private lateinit var reciteProfile: ReciteProfile
-
-        fun getInstance(context: Context): QuranApi {
-            if (! this::api.isInitialized) { api = QuranApi(context) }
-
-            if (! this::reciteProfile.isInitialized) {
-                val fileDir = context.getExternalFilesDirs("data").toString()
-                val file = File(fileDir, reciteProfileFileName)
-                reciteProfile = if (file.exists()) {
-                    val gson = Gson()
-                    val type = object : TypeToken<ReciteProfile>(){}.type
-                    gson.fromJson(file.readText(), type)
-                } else ReciteProfile()
-            }
-
-            return api
-        }
 
         fun getSurahInfoList(): List<SurahInfo> {
             if (! this::infoList.isInitialized) {
@@ -60,20 +43,6 @@ class QuranApi(context: Context) {
         fun getSurahInfo(surahNo: Int): SurahInfo {
             return getSurahInfoList()[surahNo - 1]
         }
-
-        fun saveReciteProfile(context: Context,
-                              verseID: Int,
-                              profile: ReciteProfile.Profile) {
-            reciteProfile.setProfile(verseID, profile)
-            val fileDir = context.getExternalFilesDir("data").toString()
-            val file = File(fileDir, reciteProfileFileName)
-            ThreadExecutor.execute {
-                val gson = Gson()
-                val type = object : TypeToken<ReciteProfile>(){}.type
-                val json = gson.toJson(reciteProfile, type)
-                file.writeText(json, StandardCharsets.UTF_8)
-            }
-        }
     }
 
     fun getVerse(verseIndex: Int, callback: VerseResultCallback) {
@@ -83,12 +52,14 @@ class QuranApi(context: Context) {
             mainExe.execute { callback.result(verse) }
         }
     }
+
     fun getVerse(surahNo: Int, verseNo: Int, callback: VerseResultCallback) {
         ThreadExecutor.execute {
             val content = dao.contentByVerse(surahNo, verseNo)
             mainExe.execute { callback.result(Verse(content)) }
         }
     }
+
     fun getSurah(surahNo: Int, callback: SurahResultCallback) {
         ThreadExecutor.execute {
             val contents = dao.contentBySurah(surahNo)
@@ -113,6 +84,7 @@ class QuranApi(context: Context) {
             }
         }
     }
+
     fun getBySurah(surahNo: Int, pageCallback: PageCallback) {
         ThreadExecutor.execute {
             val pageNum = dao.getPageNumbersOfSurah(surahNo)

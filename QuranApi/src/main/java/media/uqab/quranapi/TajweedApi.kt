@@ -179,7 +179,7 @@ object TajweedApi {
         /*debug*/ logTag: String = "applySpan") {
         val range = regex.findAll(verse)
         for (r in range) {
-            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last)}")
+//            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last)}")
             spannable.setSpan(ForegroundColorSpan(color),
                 r.range.first, r.range.last + endOffset,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
