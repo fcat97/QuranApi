@@ -1,7 +1,6 @@
 package media.uqab.apidemo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,26 +29,33 @@ class FragmentPage(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get Api
         val api = QuranApi.getInstance(requireContext())
 
+        // Set Layout Manger
+        // can also be set by xml
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.recyclerView.layoutManager = layoutManager
 
+        // init & set adapter
+        val verseAdapter = VerseAdapter()
+        binding.recyclerView.adapter = verseAdapter
+
+        // if surahNo passed as arg
         if (pageNo == -1001 && surahNo != -1001) {
-            val verseAdapter = VerseAdapter()
-            binding.recyclerView.adapter = verseAdapter
+            // set title
             binding.toolbar.title = "${surahNo}. ${QuranApi.getSurahInfo(surahNo).name}"
 
+            // submit surah to adapter
             api.getSurah(surahNo) { verseAdapter.submitList(it.verses) }
         }
+        // if page is passed
         else if (pageNo != -1001 && surahNo == -1001) {
-            val pageAdapter = PageAdapter()
-            binding.recyclerView.adapter = pageAdapter
-            api.getByPage(pageNo) {
-                pageAdapter.submitPage(it)
-            }
+            // set verse from page to adapter
+            api.getPage(pageNo) { verseAdapter.submitList(it.verses) }
         }
 
+        // return to parent fragment on back button clicked
         binding.backButton.setOnClickListener { parentFragmentManager.popBackStack() }
     }
 }

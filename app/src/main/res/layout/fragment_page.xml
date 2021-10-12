@@ -44,6 +44,6 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         android:layout_below="@id/appbarLayout"
-        tools:listitem="@layout/item_page"/>
+        tools:listitem="@layout/item_ayah"/>
 
 </RelativeLayout>

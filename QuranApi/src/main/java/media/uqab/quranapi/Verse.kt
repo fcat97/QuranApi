@@ -14,7 +14,7 @@ data class Verse(
 ) {
     lateinit var spannedIndo: Spanned
 
-    init { ThreadExecutor.execute { spannedIndo = TajweedApi.getTajweedColored(verseIndo) } }
+    init { ThreadExecutor.executeParallel { spannedIndo = TajweedApi.getTajweedColored(verseIndo) } }
 
     constructor(content: Content): this(
         content.verseID,
