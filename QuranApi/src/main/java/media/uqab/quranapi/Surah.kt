@@ -7,6 +7,11 @@ class Surah (
     val type: String,
     val verses: List<Verse>
 ) {
+
+    /**
+     * Get all verses As A SINGLE STRING
+     * with verse number at the end.
+     */
     fun getIndoVerses(): String {
         val stringBuilder = StringBuilder()
 

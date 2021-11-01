@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import media.uqab.quranapi.QuranApi
+import media.uqab.quranapi.ThreadExecutor
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,11 +23,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun debug() {
-        val api = QuranApi.getInstance(this)
-
-        api.getVerse(10) {
-            Log.d(TAG, "debug: ${it.surahNo}:${it.verseNo}")
-        }
+        val t1 = System.currentTimeMillis()
+        Log.d(TAG, "debug: ${System.currentTimeMillis() - t1}ms")
     }
 
     private fun openFragmentBySurah(surahNo: Int) {

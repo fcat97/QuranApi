@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Content::class, SurahInfo::class], version = 1, exportSchema = false)
+@Database(entities = [Content::class], version = 1, exportSchema = false)
 abstract class ApiDatabase: RoomDatabase() {
     abstract val apiDao: ApiDao
 
@@ -21,7 +21,7 @@ abstract class ApiDatabase: RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         ApiDatabase::class.java,
-                        "ApiDB.room")
+                        "quranApi.room")
                         .createFromAsset("quran_full.db")
                         .fallbackToDestructiveMigration()
                         .build()

@@ -1,12 +1,6 @@
 package media.uqab.quranapi.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.io.Serializable
-
-@Entity(tableName = "surah_info_table")
 data class SurahInfo(
-    @PrimaryKey
     val surahNo: Int,
     val name: String,
     val nameAr: String,

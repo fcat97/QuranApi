@@ -1,6 +1,7 @@
 package media.uqab.quranapi
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -20,6 +21,13 @@ class QuranApi private constructor(context: Context) {
         private const val TAG = "QuranApi"
         private lateinit var infoList: List<SurahInfo>
 
+        /**
+         * Get Information about all the Surah
+         *
+         * NOTE: This will block the thread for the first time.
+         *
+         * USE [getAsyncSurahInfoList] instead if needed.
+         */
         fun getSurahInfoList(): List<SurahInfo> {
             if (! this::infoList.isInitialized) {
                 val gson = Gson()
@@ -33,9 +41,23 @@ class QuranApi private constructor(context: Context) {
             return infoList
         }
 
+        /**
+         * Get information about a surah
+         * This will block calling thread for the first time
+         */
         fun getSurahInfo(surahNo: Int): SurahInfo {
             return getSurahInfoList()[surahNo - 1]
         }
+    }
+
+    /**
+     * Returns List of all [SurahInfo] asynchronously
+     */
+    fun getAsyncSurahInfoList(
+        result: (info: List<SurahInfo>) -> Unit
+    ) = ThreadExecutor.execute {
+        val ll = getSurahInfoList()
+        mainExe.execute { result(ll) }
     }
 
     fun getVerse(
@@ -67,8 +89,15 @@ class QuranApi private constructor(context: Context) {
         val verses = mutableListOf<Verse>()
         contents.forEach { verses.add(Verse(it)) }
 
-        val surahInfo = dao.surahInfo(surahNo)
-        val surah = Surah(surahNo, surahInfo.name, surahInfo.nameAr, surahInfo.type,verses)
+        val surahInfo = getSurahInfo(surahNo)
+        Log.d(TAG, "getSurah: $surahInfo")
+        val surah = Surah(
+            surahNo = surahNo,
+            name = surahInfo.name,
+            nameAr = surahInfo.nameAr,
+            type = surahInfo.type,
+            verses = verses
+        )
 
         mainExe.execute { callback.result(surah) }
     }

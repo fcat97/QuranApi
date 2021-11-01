@@ -21,10 +21,4 @@ interface ApiDao {
 
     @Query("SELECT DISTINCT page_indo FROM verses_content WHERE surahNo = :surahNo ORDER BY verseID ASC")
     fun getPageNumbersOfSurah(surahNo: Int): List<Int>
-
-    @Query("SELECT * FROM surah_info_table WHERE surahNo = :surahNo")
-    fun surahInfo(surahNo: Int): SurahInfo
-
-    @Query("SELECT * FROM surah_info_table ORDER BY surahNo ASC")
-    fun surahInfo(): List<SurahInfo>
 }
