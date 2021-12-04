@@ -60,78 +60,120 @@ class QuranApi private constructor(context: Context) {
         mainExe.execute { result(ll) }
     }
 
+    /**
+     * This is a Blocking Function. Use [getVerseAsync] instead.
+     */
     fun getVerse(
+        verseIndex: Int
+    ): Verse {
+        val content = dao.contentByVerseID(verseIndex)
+        return Verse(content)
+    }
+
+    fun getVerseAsync(
         verseIndex: Int,
         callback: VerseResultCallback
     ) = ThreadExecutor.execute {
-        val content = dao.contentByVerseID(verseIndex)
-        val verse = Verse(content)
-
+        val verse = getVerse(verseIndex)
         mainExe.execute { callback.result(verse) }
     }
 
+    /**
+     * This is a Blocking Function. Use [getVerseAsync] instead.
+     */
     fun getVerse(
+        surahNo: Int,
+        verseNo: Int
+    ): Verse {
+        val content = dao.contentByVerse(surahNo, verseNo)
+        return Verse(content)
+    }
+
+    fun getVerseAsync(
         surahNo: Int,
         verseNo: Int,
         callback: VerseResultCallback
     ) = ThreadExecutor.execute {
-        val content = dao.contentByVerse(surahNo, verseNo)
-
-        mainExe.execute { callback.result(Verse(content)) }
+        val verse = getVerse(surahNo, verseNo)
+        mainExe.execute { callback.result(verse) }
     }
 
-
+    /**
+     * This is a Blocking Function. Use [getSurahAsync] instead.
+     */
     fun getSurah(
-        surahNo: Int,
-        callback: SurahResultCallback
-    ) = ThreadExecutor.execute {
+        surahNo: Int
+    ): Surah {
         val contents = dao.contentBySurah(surahNo)
         val verses = mutableListOf<Verse>()
         contents.forEach { verses.add(Verse(it)) }
 
         val surahInfo = getSurahInfo(surahNo)
-        Log.d(TAG, "getSurah: $surahInfo")
-        val surah = Surah(
+        return Surah(
             surahNo = surahNo,
             name = surahInfo.name,
             nameAr = surahInfo.nameAr,
             type = surahInfo.type,
             verses = verses
         )
+    }
 
+    fun getSurahAsync(
+        surahNo: Int,
+        callback: SurahResultCallback
+    ) = ThreadExecutor.execute {
+        val surah = getSurah(surahNo)
         mainExe.execute { callback.result(surah) }
     }
 
-
+    /**
+     * This is a Blocking Function. Use [getPageAsync] instead.
+     */
     fun getPage(
-        pageNo: Int,
-        callback: PageCallback
-    ) = ThreadExecutor.execute {
+        pageNo: Int
+    ): Page {
         val content = dao.contentByPage(pageNo)
         val verse: MutableList<Verse> = mutableListOf()
         content.forEach { verse.add(Verse(it)) }
-
-        mainExe.execute { callback.result(Page(pageNo, verse)) }
+        return Page(pageNo, verse)
     }
 
-
-    fun getBySurah(
-        surahNo: Int,
-        callback: PageListCallback
+    fun getPageAsync(
+        pageNo: Int,
+        callback: PageCallback
     ) = ThreadExecutor.execute {
+        val page = getPage(pageNo)
+        mainExe.execute { callback.result(page) }
+    }
+
+    /**
+     * This is a Blocking Function. Use [getBySurahAsync] instead.
+     */
+    fun getBySurah(
+        surahNo: Int
+    ): List<Page> {
         val pageNum = dao.getPageNumbersOfSurah(surahNo)
         val pages: MutableList<Page> = mutableListOf()
 
         for (num in pageNum) {
-//                Log.d(TAG, "getBySurah: pageNo $num")
+//                Log.d(TAG, "getBySurahAsync: pageNo $num")
             val verses: MutableList<Verse> = mutableListOf()
             val content = dao.contentByPage(num, surahNo)
             content.forEach { verses.add(Verse(it))
-//                    Log.d(TAG, "getBySurah: content ${it.verseIndo}")
+//                    Log.d(TAG, "getBySurahAsync: content ${it.verseIndo}")
             }
 
             pages.add(Page(num, verses))
         }
+
+        return pages
+    }
+
+    fun getBySurahAsync(
+        surahNo: Int,
+        callback: PageListCallback
+    ) = ThreadExecutor.execute {
+        val pages = getBySurah(surahNo)
 
         mainExe.execute { callback.result(pages) }
     }

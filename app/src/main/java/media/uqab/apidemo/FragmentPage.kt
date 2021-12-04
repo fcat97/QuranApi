@@ -47,12 +47,12 @@ class FragmentPage(
             binding.toolbar.title = "${surahNo}. ${QuranApi.getSurahInfo(surahNo).name}"
 
             // submit surah to adapter
-            api.getSurah(surahNo) { verseAdapter.submitList(it.verses) }
+            api.getSurahAsync(surahNo) { verseAdapter.submitList(it.verses) }
         }
         // if page is passed
         else if (pageNo != -1001 && surahNo == -1001) {
             // set verse from page to adapter
-            api.getPage(pageNo) { verseAdapter.submitList(it.verses) }
+            api.getPageAsync(pageNo) { verseAdapter.submitList(it.verses) }
         }
 
         // return to parent fragment on back button clicked
