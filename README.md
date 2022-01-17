@@ -39,10 +39,11 @@ val adapter = Adapter()
 recyclerView.adapter = adapter
 
 val api = QuranApi(this)
-api.getSurah(2) { adapter.submitList(it.verses) }
+api.getSurahAsync(2) { adapter.submitList(it.verses) }
 ```
 
-A fully functional app source is included in this repo. For more detail see the [How to](wiki/howTo.md)
+For details see the [How To](wiki/howTo.md) page.
+A fully functional app source is included in this repo.
 
 >
 
