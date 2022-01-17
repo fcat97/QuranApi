@@ -3,7 +3,7 @@
 #QuranApi
 
 QuranApi is a small library intended to minimize the
-efforts of adding Quran inside Android Application.
+efforts of adding the holy Quran inside Android Application.
 
 In muslim community there are several writing formats of the Quran. Though these
 formats have the same verses, but the writing style is slightly different from each other.
@@ -16,7 +16,7 @@ This projects includes three of these styles.
 
 ![](verse_styles.png)
 
-Currently this Project is focused on IndoPak style of Quran.
+Currently this Project is focused on **IndoPak** style of Quran.
 
 
 ### How to Use
@@ -30,8 +30,18 @@ val api = QuranApi.getInstance(context)
 
 #### To get a single verses
 
+There is an normal blocking method and an async method. Use which match your need.
+
+**Note:** verseIndex is the position of verse in Quran having a range between 1(Fatiha 1:1) to 6236(Suratun Naas 114:6).
+
 ```kotlin
-api.getVerse(surahNo = 2, verseNo = 2) { /*it: Verse*/
+// blocking method
+Thread {
+    val verse = api.getVerse(verseIndex = 4)
+}.start()
+
+// async method
+api.getVerseAsync(surahNo = 2, verseNo = 2) { /*it: Verse*/
     // you got the verse with
     // this callback
 }
@@ -51,6 +61,8 @@ Each Verse contains information about
 #### To get all the surah information:
 
 This is a static method. So you can get the list without instantiating QuranApi.
+This method block the thread for the first time. The time is very little. Mostly
+not noticable.
 
 ```kotlin
 QuranApi.getSurahInfoList()
@@ -59,9 +71,12 @@ QuranApi.getSurahInfoList()
 #### To get a single Surah
 
 ```kotlin
-api.getSurah(surahIndex) { /*it: surah*/
+api.getSurahAsync(surahIndex) { /*it: surah*/
     // Surah with contents
 }
+
+// or blocking
+val surah = api.getSurah()
 ```
 
 Each Surah contains these informations
@@ -80,11 +95,11 @@ you have two options:
 2. The surah with pages.
 
 ```kotlin
-api.getByPage(pageNo) {
+api.getByPageAsync(pageNo) {
     // single page
 }
 
-api.getBySurah(surahNo) {
+api.getBySurahAsync(surahNo) {
     // whole surah with
     // verse formated inside pages
 }
@@ -102,12 +117,14 @@ and all the verses has information of the page they belongs to. See the use of `
 Currently tajweed color of only *IndoPak* format is included inside each verse.
 You can use any string in Arabic formatted as *IndoPak* style to get a spanned text with tajweed colors.
 
+***Note:*** The TajweedApi is still in BETA, some tajweed may not work.
+
 ```kotlin
 TajweedApi.getTajweedColored(verse.verseIndo) // only IndoPak is avaiable for now
 ```
 
 The spanned verse is created on a separate thread while user query for Verse.
-This is done for performance improvement, since calculation of each tajweed is CPU intensive.
+This is done for performance improvement, since calculation of each tajweed is a little CPU intensive.
 So use it with **try..catch**
 For example, in **recyclerView**
 
