@@ -18,7 +18,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:titleTextColor="?attr/colorOnPrimary"
-                app:title="Quran Api"/>
+                app:title="@string/app_name"/>
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.recyclerview.widget.RecyclerView

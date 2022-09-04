@@ -7,6 +7,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ApiDemo"
+rootProject.name = "TazweedQuran"
 include ':app'
 include ':QuranApi'

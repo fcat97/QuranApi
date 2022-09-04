@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ApiDemo</string>
+    <string name="app_name">Tazweed Quran</string>
     <string name="surah_fatiha_verses"> بِسۡمِ اللّٰہِ الرَّحۡمٰنِ الرَّحِیۡمِ اَلۡحَمۡدُ لِلّٰہِ رَبِّ الۡعٰلَمِیۡنَ ۙ الرَّحۡمٰنِ الرَّحِیۡمِ ۙمٰلِکِ یَوۡمِ الدِّیۡنِ ؕاِیَّاکَ نَعۡبُدُ وَاِیَّاکَ نَسۡتَعِیۡنُ ؕاِہۡدِنَا الصِّرَاطَ الۡمُسۡتَقِیۡمَ ۙصِرَاطَ الَّذِیۡنَ اَنۡعَمۡتَ عَلَیۡہِمۡ ۙ۬  غَیۡرِ الۡمَغۡضُوۡبِ عَلَیۡہِمۡ وَلَا الضَّآلِّیۡنَ ٪</string>
     <string name="exit_warning">Tap again to exit</string>
     <string name="suratul_fatiha">Suratul Fatiha</string>

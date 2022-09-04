@@ -26,7 +26,7 @@ class FragmentSurahList(private val listener: ItemClickedListener): Fragment() {
 
         val adapter = SurahListAdapter { listener.onClick(it) }
         binding.recyclerView.adapter = adapter
-        requireActivity().title = "QuranApi"
+        requireActivity().title = getString(R.string.app_name)
 
         ThreadExecutor.executeParallel {
             QuranApi.getInstance(requireContext())
