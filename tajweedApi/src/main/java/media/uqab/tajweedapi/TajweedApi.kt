@@ -1,11 +1,10 @@
-package media.uqab.quranapi
+package media.uqab.tajweedapi
 
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 
 /**
  * @author shahriar zaman
@@ -32,21 +31,23 @@ object TajweedApi {
     private val meem_isolated = listOf('ۢ', 'ۭ') // U+06e2, U+06ed
     private val harf_idgam_withGunnah = listOf('ی','ى','و','م','ن') // U+06cc(farsi ya) U+064a, U+0648, U+0645, U+0646
     private val harf_idgam_withoutGunnah = listOf('ر','ل') // U+0631, U+0644
+    private val stops = listOf("مـ", "قلى", '\u06da', '\u06d9', '\u06dc','\u06d9', '\u066a', '\u0615')
 
     private val pattern_nuun_sakin = getNuunSakin().toRegex()
-    private val pattern_qalqalah = getQalqalahPatter().toRegex()
+    private val pattern_qalqalah = getQalqalahInMiddlePattern().toRegex()
+    private val pattern_qalqalah_stop = getQalqalahInStopPattern().toRegex()
     private val pattern_iqfaa = getIqfaaPattern().toRegex()
     private val pattern_iqlab = getIqlabPattern().toRegex()
     private val pattern_idgaan_wg = getIdgaamWithGunnahPattern().toRegex()
     private val pattern_idgaan_wog = getIdgaamWithOutGunnahPattern().toRegex()
     private val pattern_wazeebGunnah = getWazeebGunnah().toRegex()
 
-    var qalqalahColor = Color.parseColor("#00aa00")
-    var iqfaaColor = Color.RED
-    var iqlabColor = Color.BLUE
-    var idgamWithGunnahColor = Color.MAGENTA
-    var idgamWithOutGunnahColor = Color.LTGRAY
-    var wazeebGunnahColor = Color.parseColor("#F07624") // orange-dark
+    private var qalqalahColor = Color.parseColor("#00aa00")
+    private var iqfaaColor = Color.RED
+    private var iqlabColor = Color.BLUE
+    private var idgamWithGunnahColor = Color.MAGENTA
+    private var idgamWithOutGunnahColor = Color.LTGRAY
+    private var wazeebGunnahColor = Color.parseColor("#F07624") // orange-dark
 
     /**
      * This method only works for indoQuran format
@@ -58,16 +59,18 @@ object TajweedApi {
      */
     fun getTajweedColored(verse: String): Spanned {
         val spannable = SpannableString(verse)
-        // log each character with unicode value of the verse
-//        for (i in verse.indices) Log.d(TAG, "getTajweedColored: ${toUnicode(verse[i])} --> ${verse[i]}")
+
+        //if (!verse.contains("صُمٌّۢ بُکۡم")) return spannable
+        // Log.d(TAG, "getTajweedColored: ${getIqlabPattern()}")
 
         // TODO: this needs too much computation.. So make it fast
         applySpan(pattern_wazeebGunnah, verse, wazeebGunnahColor, spannable, logTag = "wazeebGunnah")
-        applySpan(pattern_iqfaa, verse, iqfaaColor, spannable, logTag = "iqfaa")
+        applySpan(pattern_iqfaa, verse, iqfaaColor, spannable, endOffset = -1, logTag = "iqfaa")
         applySpan(pattern_iqlab, verse, iqlabColor, spannable, logTag = "iqlab")
         applySpan(pattern_idgaan_wg, verse, idgamWithGunnahColor, spannable, logTag = "idgam_wg")
         applySpan(pattern_idgaan_wog, verse, idgamWithOutGunnahColor, spannable, endOffset = -3, logTag = "idgam_wog")
         applySpan(pattern_qalqalah, verse, qalqalahColor, spannable, logTag = "qalqalah")
+        applySpan(pattern_qalqalah_stop, verse, qalqalahColor, spannable, endOffset = -1, logTag = "qalqalah_stop")
 
         return spannable
     }
@@ -102,13 +105,34 @@ object TajweedApi {
         this.append("]?")
     }
 
-    private fun getQalqalahPatter() = buildString {
-        this.append('[')
-        for (c in qalqalah) this.append(c)
-        this.append(']')
-        this.append('[')
-        for (c in sakin) this.append(c)
-        this.append(']')
+    private fun getQalqalahInMiddlePattern() = buildString {
+        append("([")
+        for (c in qalqalah) append(c)
+        append(']')
+        append('[')
+        for (c in sakin) append(c)
+        append("])")
+    }
+
+    private fun getQalqalahInStopPattern() = buildString {
+        append("[")
+        for (c in qalqalah) append(c)
+        append(']')
+
+        append(tashdeed)
+        append('?')
+
+        append('[')
+        for (c in harqat) append(c)
+        for (c in tanween) append(c)
+        append("]")
+
+        append('\u2009') // thin space
+        append('?')
+
+        append('(')
+        append(stops.joinToString("|"))
+        append(')')
     }
 
     private fun getIqfaaPattern() = buildString {
@@ -179,6 +203,8 @@ object TajweedApi {
         /*debug*/ logTag: String = "applySpan") {
         val range = regex.findAll(verse)
         for (r in range) {
+            val spans = spannable.getSpans(r.range.first, r.range.last, ForegroundColorSpan::class.java)
+            spans.forEach { spannable.removeSpan(it) }
 //            Log.d(TAG, "$logTag: ${verse.subSequence(r.range.first, r.range.last)}")
             spannable.setSpan(ForegroundColorSpan(color),
                 r.range.first, r.range.last + endOffset,

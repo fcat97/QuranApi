@@ -10,3 +10,4 @@ dependencyResolutionManagement {
 rootProject.name = "TazweedQuran"
 include ':app'
 include ':QuranApi'
+include ':tajweedApi'

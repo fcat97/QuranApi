@@ -1,21 +1,19 @@
 package media.uqab.apidemo
 
 import android.graphics.Color
-import android.text.Spanned
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import media.uqab.apidemo.databinding.ItemAyahBinding
 import media.uqab.quranapi.QuranApi
-import media.uqab.quranapi.TajweedApi
 import media.uqab.quranapi.Verse
 
 import android.util.TypedValue
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import media.uqab.tajweedapi.TajweedApi
 
 
 class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
