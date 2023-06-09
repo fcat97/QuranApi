@@ -35,6 +35,7 @@ If the only need is to add tajeeed colors, use the [TajweedApi](https://github.c
 dependencies {
     implementation 'com.github.fcat97:TajweedApi:version'
 }
+```
 
 ## How to Use?
 
