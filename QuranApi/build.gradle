@@ -101,8 +101,8 @@ afterEvaluate {
                 from components.release
 
                 // You can then customize attributes of the publication as shown below.
-                groupId = 'media.uqab.QuranApi'
-                artifactId = 'final'
+                groupId = 'media.uqab.quranApi'
+                artifactId = 'quranApi'
 
                 def versionPropsFile = file('version.properties')
                 if (versionPropsFile.canRead()) {
