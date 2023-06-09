@@ -89,7 +89,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    api(project(':tajweedApi'))
+    api 'com.github.fcat97:TajweedApi:1.0.3'
 }
 
 afterEvaluate {

@@ -10,9 +10,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/QuranApi" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/tajweedApi" />
+            <option value="$PROJECT_DIR$/quranApi" />
           </set>
         </option>
       </GradleProjectSettings>

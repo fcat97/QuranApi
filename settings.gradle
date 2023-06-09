@@ -5,9 +5,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "TazweedQuran"
 include ':app'
-include ':QuranApi'
-include ':tajweedApi'
+include ':quranApi'

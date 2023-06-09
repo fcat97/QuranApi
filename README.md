@@ -25,9 +25,16 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.fcat97:QuranApi:version'
+    implementation 'com.github.fcat97:quranApi:version'
 }
 ```
+
+If the only need is to add tajeeed colors, use the [TajweedApi](https://github.com/fcat97/TajweedApi): `version:` [![](https://jitpack.io/v/fcat97/TajweedApi.svg)](https://jitpack.io/#fcat97/TajweedApi)
+
+```gradle
+dependencies {
+    implementation 'com.github.fcat97:TajweedApi:version'
+}
 
 ## How to Use?
 
@@ -47,6 +54,4 @@ A fully functional app source is included in this repo.
 
 >
 
-More features are comming InshaAllah...
-
-Feel free to fork and update. Just give me a PullRequest...
+Feel free to fork and update. Just give me a PR...
