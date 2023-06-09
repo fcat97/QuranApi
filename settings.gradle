@@ -8,6 +8,6 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "TazweedQuran"
+rootProject.name = "QuranApi"
 include ':app'
 include ':quranApi'
