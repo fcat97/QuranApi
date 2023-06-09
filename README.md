@@ -25,7 +25,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.fcat97:quranApi:version'
+    implementation 'com.github.fcat97:QuranApi:version'
 }
 ```
 
