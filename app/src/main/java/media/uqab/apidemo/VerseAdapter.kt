@@ -73,7 +73,7 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
 
         if (alternateViewColor == -1000) {
             val typedValue = TypedValue()
-            parent.context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            parent.context.theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true)
             val colorPrimary = typedValue.data
             this.alternateViewColor = Color.argb(15, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
             this.pageTitleColor = Color.argb(120, colorPrimary.red, colorPrimary.green, colorPrimary.blue)
