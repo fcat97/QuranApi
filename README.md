@@ -29,7 +29,7 @@ dependencies {
 }
 ```
 
-If the only need is to add tajeeed colors, use the [TajweedApi](https://github.com/fcat97/TajweedApi): `version:` [![](https://jitpack.io/v/fcat97/TajweedApi.svg)](https://jitpack.io/#fcat97/TajweedApi)
+If the only need is to add tajeeed colors, use the [TajweedApi](https://github.com/fcat97/tajweedApi): `version:` [![](https://jitpack.io/v/fcat97/tajweedApi.svg)](https://jitpack.io/#fcat97/tajweedApi)
 
 ```gradle
 dependencies {
