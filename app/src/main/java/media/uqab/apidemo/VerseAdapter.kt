@@ -1,19 +1,21 @@
 package media.uqab.apidemo
 
 import android.graphics.Color
+import android.text.SpannableString
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.recyclerview.widget.RecyclerView
 import media.uqab.apidemo.databinding.ItemAyahBinding
 import media.uqab.quranapi.QuranApi
 import media.uqab.quranapi.Verse
-
-import android.util.TypedValue
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
-import media.uqab.tajweedapi.TajweedApi
+import media.uqab.tajweedapi.android.AndroidIndoPakPainter
+import media.uqab.tajweedapi.indopak.DefaultIndopakColor
+import media.uqab.tajweedapi.indopak.IndoPakTajweedApi
 
 
 class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
@@ -22,6 +24,7 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
     private var alternateViewColor = -1000
     private var pageTitleColor = -1000
     private val showPageNoAt = mutableListOf<Int>()
+    private val painter = AndroidIndoPakPainter()
 
     inner class AyahHolder(private val binding: ItemAyahBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(verse: Verse) {
@@ -63,7 +66,16 @@ class VerseAdapter: RecyclerView.Adapter<VerseAdapter.AyahHolder>() {
             binding.verseNo.text = verse.verseNo.toString()
 
             try { binding.verseText.text = verse.spannedIndo }
-            catch (ignored: Exception) { binding.verseText.text = TajweedApi.getTajweedColored(verse.verseIndo) }
+            catch (ignored: Exception) {
+                binding.verseText.text = IndoPakTajweedApi.getSingleton()
+                    .getTajweed(verse.verseIndo).let {
+                        painter.paint(
+                            verse = SpannableString(verse.verseIndo),
+                            tajweed = it,
+                            colors = DefaultIndopakColor
+                        )
+                    }
+            }
         }
     }
 

@@ -1,8 +1,11 @@
 package media.uqab.quranapi
 
+import android.text.SpannableString
 import android.text.Spanned
 import media.uqab.quranapi.database.Content
-import media.uqab.tajweedapi.TajweedApi
+import media.uqab.tajweedapi.android.AndroidIndoPakPainter
+import media.uqab.tajweedapi.indopak.DefaultIndopakColor
+import media.uqab.tajweedapi.indopak.IndoPakTajweedApi
 
 data class Verse(
     /**
@@ -46,9 +49,22 @@ data class Verse(
      */
     lateinit var spannedIndo: Spanned
 
-    init { ThreadExecutor.executeParallel { spannedIndo = TajweedApi.getTajweedColored(verseIndo) } }
+    init {
+        if (verseNo == 7 && surahNo == 2) println(verse)
 
-    constructor(content: Content): this(
+        ThreadExecutor.executeParallel {
+            spannedIndo = IndoPakTajweedApi.getSingleton()
+                .getTajweed(verseIndo).let {
+                    AndroidIndoPakPainter().paint(
+                        SpannableString(verseIndo),
+                        it,
+                        DefaultIndopakColor
+                    )
+                }
+        }
+    }
+
+    constructor(content: Content) : this(
         content.verseID,
         content.verse,
         content.verseAr,
