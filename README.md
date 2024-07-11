@@ -33,7 +33,8 @@ If the only need is to add tajeeed colors, use the [TajweedApi](https://github.c
 
 ```gradle
 dependencies {
-    implementation 'com.github.fcat97:TajweedApi:version'
+    implementation 'com.github.fcat97:tajweedApi:version' // core parser
+    implementation 'com.github.fcat97:tajweedApi-android:version' // for android target
 }
 ```
 

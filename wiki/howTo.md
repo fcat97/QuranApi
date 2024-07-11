@@ -120,7 +120,8 @@ You can use any string in Arabic formatted as *IndoPak* style to get a spanned t
 ***Note:*** The TajweedApi is still in BETA, some tajweed may not work.
 
 ```kotlin
-TajweedApi.getTajweedColored(verse.verseIndo) // only IndoPak is avaiable for now
+IndoPakTajweedApi.getSingleton() // only IndoPak is avaiable for now
+    .getTajweedColored(verse.verseIndo)
 ```
 
 The spanned verse is created on a separate thread while user query for Verse.
@@ -130,7 +131,7 @@ For example, in **recyclerView**
 
 ```kotlin
 try { binding.textView.text = verse.spannedIndo }
-catch (ignored: Exception) { binding.textView.text = TajweedApi.getTajweedColored(verse.verseIndo) }
+catch (ignored: Exception) { binding.textView.text = IndoPakTajweedApi.getSingleton().getTajweedColored(verse.verseIndo) }
 ```
 
 This project is in very early stage. So feel free to issue any bug you find.
